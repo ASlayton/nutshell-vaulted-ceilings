@@ -1,12 +1,13 @@
 const taskDom = require('./taskDom');
 
 const clickTasks = () => {
-  $(document).on('click', '#insertButtonID', taskTime);
+  $(document).on('click', '#tasksBtn', taskTime);
 };
 
 const taskTime = () => {
   $('#tasks').removeClass('hide');
-  taskDom();
+  $('#auth').addClass('hide');
+  taskDom.taskString();
 };
 
 module.exports = {
