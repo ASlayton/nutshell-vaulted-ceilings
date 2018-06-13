@@ -5,6 +5,7 @@ const clickTasks = () => {
 };
 
 const taskTime = () => {
+  $('#tasks').removeClass('hide');
   taskDom();
 };
 
