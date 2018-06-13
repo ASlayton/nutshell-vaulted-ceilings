@@ -37,12 +37,9 @@ const authorizationEvents = () => {
     firebase.auth().signOut()
       .then(() => {
         // Sign-out successful.
-        $('#auth').removeClass('hide');
-        $('#auth-link').removeClass('hide');
-        $('#saved-link, #logout').addClass('hide');
-        $('#zip-submit').addClass('hide');
-        $('#savedForecasts').addClass('hide');
-        $('#savedForecasts').html('');
+        $('#welcome, #logout, #auth').addClass('hide');
+        $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+        $('#inputPassword, #inputEmail, #registerPassword, #registerEmail, #registerUsername').val('');
       })
       .catch((error) => {
         // An error happened.
