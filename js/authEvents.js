@@ -10,9 +10,10 @@ const authorizationEvents = () => {
   });
 
   $('#register-btn').click(() => {
-    const email = $('#registerEmail').val();
-    const password = $('#registerPassword').val();
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    const userEmail = $('#registerEmail').val();
+    const userPassword = $('#registerPassword').val();
+    // const userName = $('#registerUsername').val();
+    firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword)
       .catch((error) => {
         $('#register-error-msg').text(error.message);
         $('#register-error').removeClass('hide');

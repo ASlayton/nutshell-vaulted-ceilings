@@ -1,22 +1,18 @@
 {
   "users": {
     "user1": {
-      "email":"",
       "username": "",
       "uid": ""
     },
     "user2": {
-      "email": "",
       "username": "",
       "uid": ""
     },
     "user3": {
-      "email": "",
       "username": "",
       "uid": ""
     },
     "user4": {
-      "email": "",
       "username": "",
       "uid": ""
     }
