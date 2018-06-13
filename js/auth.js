@@ -5,7 +5,7 @@ const checkUserLoginStatus = () => {
     if (user) {
       setUid(user.uid);
       $('#auth').addClass('hide');
-      $('#welcome').removeClass('hide');
+      $('#welcome, #logout').removeClass('hide');
       $('#users, #events, #tasks, #friends, #messages').addClass('hide');
     } else {
       $('#auth').removeClass('hide');
