@@ -5,8 +5,9 @@ const checkUserLoginStatus = () => {
     if (user) {
       setUid(user.uid);
       $('#auth').addClass('hide');
-      $('#welcome, #logout').removeClass('hide');
-      $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+      // $('#messages').addClass('hide'); <--UNCOMMENT THIS!
+      // $('#welcome, #logout').removeClass('hide'); <--UNCOMMENT THIS!
+      $('#users, #events, #tasks, #friends').addClass('hide'); // <--ADD #MESSAGES BACK!!
     } else {
       $('#auth').removeClass('hide');
       $('#welcome').addClass('hide');
