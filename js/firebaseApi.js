@@ -1,14 +1,14 @@
 let firebaseConfig = {};
-let userId = '';
+// let userId = '';
 // let fbUserName = '';
 
 const setConfig = (fbconfig) => {
   firebaseConfig = fbconfig;
 };
 
-const setUid = (newUserId) => {
-  userId = newUserId;
-};
+// const setUid = (newUserId) => {
+//   let userId = newUserId;
+// };
 
 // const setUsername = (newUsername) => {
 //   fbUserName = newUsername;
@@ -23,11 +23,11 @@ const setUid = (newUserId) => {
 //   saveUser(newUserObj);
 // };
 
-const getUserById = (id) => {
+const getUserById = (uid) => {
   return new Promise((resolve, reject) => {
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/users.json?orderBy="uid"&equalTo="${userId}"`,
+      url: `${firebaseConfig.databaseURL}/users.json?orderBy="uid"&equalTo="${uid}"`,
     })
       .done((user) => {
         resolve(user);
@@ -56,7 +56,6 @@ const saveNewUser = (newUserObj) => {
 
 module.exports = {
   setConfig,
-  setUid,
   firebaseConfig,
   saveNewUser,
   getUserById,

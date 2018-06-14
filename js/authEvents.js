@@ -17,12 +17,12 @@ const authorizationEvents = () => {
     const userName = $('#registerUsername').val();
     firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword)
       .then((createdUser) => {
-        getUserById(createdUser.uid)
+        getUserById(createdUser.user.uid)
           .then((user) => {
             if (!user) {
               const newUser = {
                 username: userName,
-                uid: createdUser.uid,
+                uid: createdUser.user.uid,
               };
               saveNewUser(newUser).then((uzerr) => {
                 $('#auth').addClass('hide');
@@ -59,7 +59,8 @@ const authorizationEvents = () => {
     firebase.auth().signOut()
       .then(() => {
         // Sign-out successful.
-        $('#welcome, #logout, #auth').addClass('hide');
+        $('#auth').removeClass('hide');
+        $('#welcome, #logout').addClass('hide');
         $('#users, #events, #tasks, #friends, #messages').addClass('hide');
         $('#inputPassword, #inputEmail, #registerPassword, #registerEmail, #registerUsername').val('');
       })
