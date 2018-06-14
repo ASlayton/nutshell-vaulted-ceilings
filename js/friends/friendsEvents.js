@@ -1,4 +1,4 @@
-const {getAllUsers, addAFriend,} = require('./friendsCrud');
+const {getAllUsers, addAFriend, getAllFriends,} = require('./friendsCrud');
 const {domStringBuild,} = require('./friendsDom');
 
 $('#friendsBtn').click(() =>
@@ -11,6 +11,7 @@ const getAllUsersEvent = () =>
 {
   $('#getFriendsBtn').click(() =>
   {
+    getAllFriends();
     getAllUsers()
       .then((results) =>
       {
@@ -28,12 +29,10 @@ const addAFriendEvent = () =>
 {
   $(document).on('click', '.addThisFriend', (e) =>
   {
-    console.log($(e.target));
     const friendToAddCard = $(e.target).closest('.friendCard');
     const friendUid = friendToAddCard.find('h3').data('frienduid');
     const friendToAdd =
     {
-      'userUid': firebase.auth().currentUser.uid,
       'friendUid': friendUid,
       'isAccepted': false,
       'isPending': true,

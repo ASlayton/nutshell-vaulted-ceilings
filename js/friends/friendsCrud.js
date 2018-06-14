@@ -22,7 +22,6 @@ const getFirebaseUrl = () =>
     .then((result) =>
     {
       setConfig(result.firebase);
-      console.log(result.firebase);
     })
     .catch((err) =>
     {
@@ -82,6 +81,7 @@ const getAllFriends = () =>
 
 const addAFriend = (newFriend) =>
 {
+  newFriend.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) =>
   {
     $.ajax(
@@ -89,7 +89,13 @@ const addAFriend = (newFriend) =>
         method: 'POST',
         url: `${firebaseConfig.databaseURL}/friends.json`,
         data: JSON.stringify(newFriend),
-      });
+      }).done((uniqueKey) =>
+    {
+      resolve(uniqueKey);
+    }).fail((err) =>
+    {
+      reject(err);
+    });
   });
 };
 
