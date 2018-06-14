@@ -1,27 +1,8 @@
 let firebaseConfig = {};
-// let userId = '';
-// let fbUserName = '';
 
 const setConfig = (fbconfig) => {
   firebaseConfig = fbconfig;
 };
-
-// const setUid = (newUserId) => {
-//   let userId = newUserId;
-// };
-
-// const setUsername = (newUsername) => {
-//   fbUserName = newUsername;
-// };
-
-// const createUserObj = () => {
-//   const userName = $('#registerUsername').val();
-//   const newUserObj = {
-//     username: userName,
-//     uid: userId,
-//   };
-//   saveUser(newUserObj);
-// };
 
 const getUserById = (uid) => {
   return new Promise((resolve, reject) => {
