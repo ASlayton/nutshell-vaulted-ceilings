@@ -12,6 +12,7 @@ const taskTime = () => {
   $('#welcome').addClass('hide');
   taskDom.taskString();
   taskDom.theTasksDom();
+  // getAllTasks();
 };
 
 const pressEnter = (e) => {
@@ -43,6 +44,16 @@ const clickTaskButton = () => {
       console.error('error in creating task', error);
     });
 };
+
+// const getAllTasks = () => {
+//   taskFirebase.getTasks()
+//     .then((tasksArray) => {
+//       taskDom.theTasksDom(tasksArray);
+//     })
+//     .catch((error) => {
+//       console.error('error in get all movies', error);
+//     });
+// };
 
 module.exports = {
   clickTasks,
