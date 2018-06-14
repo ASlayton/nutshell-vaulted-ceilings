@@ -63,6 +63,7 @@ const getAllFriends = () =>
   const uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) =>
   {
+    const allFriendsArr = [];
     $.ajax(
       {
         method: 'GET',
@@ -70,7 +71,15 @@ const getAllFriends = () =>
       })
       .done((allFriendsObj) =>
       {
-        console.log(allFriendsObj);
+        if (allFriendsObj !== null)
+        {
+          Object.keys(allFriendsObj).forEach((fbKey) =>
+          {
+            allFriendsObj[fbKey].id = fbKey;
+            allFriendsArr.push(allFriendsObj[fbKey]);
+          });
+        }
+        resolve(allFriendsArr);
       })
       .fail((err) =>
       {
