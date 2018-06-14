@@ -1,4 +1,4 @@
-const {checkUserLoginStatus,} = require('./auth');
+// const {checkUserLoginStatus,} = require('./auth');
 const {setConfig,} = require('./firebaseApi');
 
 const apiKeys = () => {
@@ -18,7 +18,7 @@ const retrieveKeys = () => {
     .then((results) => {
       setConfig(results.firebase);
       firebase.initializeApp(results.firebase);
-      checkUserLoginStatus();
+      // checkUserLoginStatus();
     })
     .catch((err) => {
       console.error('no keys: ', err);

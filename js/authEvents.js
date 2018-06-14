@@ -1,3 +1,5 @@
+const {getUserById, saveNewUser,} = require('./firebaseApi');
+
 const authorizationEvents = () => {
   $('#go-register').click(() => {
     $('#register-form').removeClass('hide');
@@ -12,8 +14,28 @@ const authorizationEvents = () => {
   $('#register-btn').click(() => {
     const userEmail = $('#registerEmail').val();
     const userPassword = $('#registerPassword').val();
-    // const userName = $('#registerUsername').val();
+    const userName = $('#registerUsername').val();
     firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword)
+      .then((createdUser) => {
+        getUserById(createdUser.uid)
+          .then((user) => {
+            if (!user) {
+              const newUser = {
+                username: userName,
+                uid: createdUser.uid,
+              };
+              saveNewUser(newUser).then((uzerr) => {
+                $('#auth').addClass('hide');
+                $('#welcome, #logout').removeClass('hide');
+                $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+              });
+            } else {
+              $('#auth').addClass('hide');
+              $('#welcome, #logout').removeClass('hide');
+              $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+            };
+          });
+      })
       .catch((error) => {
         $('#register-error-msg').text(error.message);
         $('#register-error').removeClass('hide');
