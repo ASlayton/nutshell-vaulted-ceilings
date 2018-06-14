@@ -19,7 +19,7 @@ const authorizationEvents = () => {
       .then((createdUser) => {
         getUserById(createdUser.user.uid)
           .then((user) => {
-            if (!user) {
+            if (Object.keys(user).length === 0) {
               const newUser = {
                 username: userName,
                 uid: createdUser.user.uid,
