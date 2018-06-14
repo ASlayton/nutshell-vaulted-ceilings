@@ -1,10 +1,6 @@
-// const {setUid,} = require('./firebaseApi');
-
 const checkUserLoginStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      // setUid(user.uid);
-      // createUserObj();
       $('#auth').addClass('hide');
       $('#welcome, #logout').removeClass('hide');
       $('#users, #events, #tasks, #friends, #messages').addClass('hide');
