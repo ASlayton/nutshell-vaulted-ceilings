@@ -4,14 +4,21 @@ const setConfig = (fbconfig) => {
   firebaseConfig = fbconfig;
 };
 
-const getUserById = (uid) => {
+const getUsers = () => {
+  const allUsersArray = [];
   return new Promise((resolve, reject) => {
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/users.json?orderBy="uid"&equalTo="${uid}"`,
+      url: `${firebaseConfig.databaseURL}/users.json`,
     })
-      .done((user) => {
-        resolve(user);
+      .done((allUsersObj) => {
+        if (allUsersObj !== null) {
+          Object.keys(allUsersObj).forEach((fbKey) => {
+            allUsersObj[fbKey].id = fbKey;
+            allUsersArray.push(allUsersObj[fbKey]);
+          });
+          resolve(allUsersArray);
+        }
       })
       .fail((error) => {
         reject(error);
@@ -39,5 +46,5 @@ module.exports = {
   setConfig,
   firebaseConfig,
   saveNewUser,
-  getUserById,
+  getUsers,
 };

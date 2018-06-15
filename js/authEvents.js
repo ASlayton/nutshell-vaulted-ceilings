@@ -1,4 +1,4 @@
-const {getUserById, saveNewUser,} = require('./firebaseApi');
+const {getUsers, saveNewUser,} = require('./firebaseApi');
 
 const authorizationEvents = () => {
   $('#go-register').click(() => {
@@ -15,31 +15,35 @@ const authorizationEvents = () => {
     const userEmail = $('#registerEmail').val();
     const userPassword = $('#registerPassword').val();
     const userName = $('#registerUsername').val();
-    firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword)
-      .then((createdUser) => {
-        getUserById(createdUser.user.uid)
-          .then((user) => {
-            if (Object.keys(user).length === 0) {
+    let userMatch = false;
+    getUsers()
+      .then((arrayOfUsers) => {
+        arrayOfUsers.forEach((user) => {
+          if (user.username === userName) {
+            alert('This username already exists. Please choose another username.');
+            userMatch = true;
+          }
+        });
+        if (!userMatch) {
+          firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword)
+            .then((createdUser) => {
               const newUser = {
                 username: userName,
                 uid: createdUser.user.uid,
               };
-              saveNewUser(newUser).then((uzerr) => {
-                $('#auth').addClass('hide');
-                $('#welcome, #logout').removeClass('hide');
-                $('#users, #events, #tasks, #friends, #messages').addClass('hide');
-              });
-            } else {
-              $('#auth').addClass('hide');
-              $('#welcome, #logout').removeClass('hide');
-              $('#users, #events, #tasks, #friends, #messages').addClass('hide');
-            };
-          });
-      })
-      .catch((error) => {
-        $('#register-error-msg').text(error.message);
-        $('#register-error').removeClass('hide');
-        console.error(error.message);
+              saveNewUser(newUser)
+                .then(() => {
+                  $('#auth').addClass('hide');
+                  $('#welcome, #logout').removeClass('hide');
+                  $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+                });
+            })
+            .catch((error) => {
+              $('#register-error-msg').text(error.message);
+              $('#register-error').removeClass('hide');
+              console.error(error.message);
+            });
+        };
       });
   });
 
