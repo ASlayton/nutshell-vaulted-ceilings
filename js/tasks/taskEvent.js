@@ -28,6 +28,7 @@ const pressEnter = (e) => {
     taskFirebase.createTask(taskToAdd)
       .then(() => {
         taskDom.newTask(taskToAdd);
+        $('#taskInput').val('');
       })
       .catch((error) => {
         console.error('error in creating task', error);
@@ -44,6 +45,7 @@ const clickTaskButton = () => {
   taskFirebase.createTask(taskToAdd)
     .then(() => {
       taskDom.newTask(taskToAdd);
+      $('#taskInput').val('');
     })
     .catch((error) => {
       console.error('error in creating task', error);
@@ -88,6 +90,7 @@ const isItDone = () => {
     };
     taskFirebase.completedTask(updatedTask, taskId)
       .then(() => {
+        taskToUpdate.addClass('done');
       })
       .catch((error) => {
         console.error('error on updated tasks', error);
