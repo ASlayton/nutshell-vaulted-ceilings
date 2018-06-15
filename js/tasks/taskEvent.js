@@ -12,7 +12,6 @@ const taskTime = () => {
   $('#welcome').addClass('hide');
   getAllTasks();
   taskDom.taskString();
-  // taskDom.theTasksDom();
 };
 
 const pressEnter = (e) => {
@@ -24,6 +23,7 @@ const pressEnter = (e) => {
     };
     taskFirebase.createTask(taskToAdd)
       .then(() => {
+        taskDom.newTask(taskToAdd);
       })
       .catch((error) => {
         console.error('error in creating task', error);
@@ -39,6 +39,7 @@ const clickTaskButton = () => {
   };
   taskFirebase.createTask(taskToAdd)
     .then(() => {
+      taskDom.newTask(taskToAdd);
     })
     .catch((error) => {
       console.error('error in creating task', error);
