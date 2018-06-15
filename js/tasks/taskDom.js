@@ -24,12 +24,12 @@ const taskString = () => {
 const theTasksDom = (taskArray) => {
   let domString = '';
   taskArray.forEach((task) => {
-    domString += `<div class="panel panel-default taskPanel">`;
+    domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${task.id}'>`;
     domString +=  `<div class="panel-body row">`;
     domString +=   `<p class="col-sm-6">${task.task}</p>`;
     domString +=   `<input class="checkbox col-sm-4" type="checkbox">`;
     domString +=    `<label class="col-sm-2">Complete</label>`;
-    domString +=   `<button class="btn btn-danger col-sm-4">Delete</button>`;
+    domString +=   `<button class="btn btn-danger col-sm-4" id="deleteTask">Delete</button>`;
     domString +=   `</input>`;
     domString +=  `</div>`;
     domString += `</div>`;
@@ -39,12 +39,12 @@ const theTasksDom = (taskArray) => {
 
 const newTask = (newTasks) => {
   let domString = '';
-  domString += `<div class="panel panel-default taskPanel">`;
+  domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${newTasks.id}'>`;
   domString +=  `<div class="panel-body row">`;
   domString +=   `<p class="col-sm-6">${newTasks.task}</p>`;
   domString +=   `<input class="checkbox col-sm-4" type="checkbox">`;
   domString +=    `<label class="col-sm-2">Complete</label>`;
-  domString +=   `<button class="btn btn-danger col-sm-4">Delete</button>`;
+  domString +=   `<button class="btn btn-danger col-sm-4" id="deleteTask">Delete</button>`;
   domString +=   `</input>`;
   domString +=  `</div>`;
   domString += `</div>`;

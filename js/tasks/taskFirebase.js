@@ -41,7 +41,24 @@ const getTasks = () => {
   });
 };
 
+const deleteTasks = (taskId) => {
+  return new Promise((resolve, reject) => {
+    const config = getConfig();
+    $.ajax({
+      method: 'DELETE',
+      url: `${config.databaseURL}/tasks/${taskId}.json`,
+    })
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 module.exports = {
   createTask,
   getTasks,
+  deleteTasks,
 };

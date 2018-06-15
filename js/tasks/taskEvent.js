@@ -5,6 +5,7 @@ const clickTasks = () => {
   $(document).on('click', '#tasksBtn', taskTime);
   $(document).on('click', '#createTaskBtn', clickTaskButton);
   $(document).on('keypress', '#taskInput', pressEnter);
+  $(document).on('click', '#deleteTask', deleteTask);
 };
 
 const taskTime = () => {
@@ -13,6 +14,8 @@ const taskTime = () => {
   getAllTasks();
   taskDom.taskString();
 };
+
+// Create New Task
 
 const pressEnter = (e) => {
   if (e.key === 'Enter' && !$('#task').hasClass('hide')) {
@@ -46,6 +49,8 @@ const clickTaskButton = () => {
     });
 };
 
+// Load Tasks
+
 const getAllTasks = () => {
   taskFirebase.getTasks()
     .then((tasksArray) => {
@@ -53,6 +58,21 @@ const getAllTasks = () => {
     })
     .catch((error) => {
       console.error('error in getting tasks', error);
+    });
+};
+
+// Delete Tasks
+
+const deleteTask = (e) => {
+  const taskToDelete = $(e.target).closest('#taskCard').data('firebaseId');
+  const panelToDelete = $(e.target).closest('#taskCard');
+  console.log(taskToDelete);
+  taskFirebase.deleteTasks(taskToDelete)
+    .then(() => {
+      panelToDelete.remove();
+    })
+    .catch((error) => {
+      console.error('error in deleting task', error);
     });
 };
 
