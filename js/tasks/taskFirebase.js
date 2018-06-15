@@ -1,4 +1,4 @@
-const {getConfig, getUid,} = require('./../firebaseApi.js');
+const {getConfig,} = require('./../firebaseApi.js');
 
 const createTask = (newTask) => {
   newTask.userUid = firebase.auth().currentUser.uid;
@@ -22,10 +22,9 @@ const getTasks = () => {
   return new Promise((resolve, reject) => {
     const allTasks = [];
     const config = getConfig();
-    const uid = getUid();
     $.ajax({
       method: 'GET',
-      url: `${config.databaseURL}/tasks.json?orderBy="userUid"&equalTo="${uid}"`,
+      url: `${config.databaseURL}/tasks.json`,
     })
       .done((allTasksObject) => {
         if (allTasksObject !== null) {

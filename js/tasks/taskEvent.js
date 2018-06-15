@@ -10,9 +10,9 @@ const clickTasks = () => {
 const taskTime = () => {
   $('#tasks').removeClass('hide');
   $('#welcome').addClass('hide');
+  getAllTasks();
   taskDom.taskString();
-  taskDom.theTasksDom();
-  // getAllTasks();
+  // taskDom.theTasksDom();
 };
 
 const pressEnter = (e) => {
@@ -45,15 +45,15 @@ const clickTaskButton = () => {
     });
 };
 
-// const getAllTasks = () => {
-//   taskFirebase.getTasks()
-//     .then((tasksArray) => {
-//       taskDom.theTasksDom(tasksArray);
-//     })
-//     .catch((error) => {
-//       console.error('error in get all movies', error);
-//     });
-// };
+const getAllTasks = () => {
+  taskFirebase.getTasks()
+    .then((tasksArray) => {
+      taskDom.theTasksDom(tasksArray);
+    })
+    .catch((error) => {
+      console.error('error in getting tasks', error);
+    });
+};
 
 module.exports = {
   clickTasks,
