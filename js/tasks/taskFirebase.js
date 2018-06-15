@@ -22,6 +22,7 @@ const getTasks = () => {
   return new Promise((resolve, reject) => {
     const allTasks = [];
     const config = getConfig();
+    // const uid = getUid();
     $.ajax({
       method: 'GET',
       url: `${config.databaseURL}/tasks.json`,
@@ -57,8 +58,27 @@ const deleteTasks = (taskId) => {
   });
 };
 
+const completedTask = (updatedTask, taskId) => {
+  updatedTask.uid = firebase.auth().currentUser.uid;
+  return new Promise((resolve, reject) => {
+    const config = getConfig();
+    $.ajax({
+      method: 'PUT',
+      url: `${config.databaseURL}/tasks/${taskId}.json`,
+      data: JSON.stringify(updatedTask),
+    })
+      .done((modifiedTask) => {
+        resolve(modifiedTask);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
+
 module.exports = {
   createTask,
   getTasks,
   deleteTasks,
+  completedTask,
 };

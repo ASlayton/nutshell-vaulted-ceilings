@@ -24,13 +24,15 @@ const taskString = () => {
 const theTasksDom = (taskArray) => {
   let domString = '';
   taskArray.forEach((task) => {
-    domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${task.id}'>`;
+    if (task.isComplete === true) {
+      domString += `<div class="panel panel-default taskPanel done" id="taskCard" data-firebase-id='${task.id}'>`;
+    } else { domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${task.id}'>`;
+    }
     domString +=  `<div class="panel-body row">`;
-    domString +=   `<p class="col-sm-6">${task.task}</p>`;
-    domString +=   `<input class="checkbox col-sm-4" type="checkbox">`;
-    domString +=    `<label class="col-sm-2">Complete</label>`;
-    domString +=   `<button class="btn btn-danger col-sm-4" id="deleteTask">Delete</button>`;
+    domString +=   `<p class="col-sm-8 theTask">${task.task}</p>`;
+    domString +=   `<input class="checkbox col-sm-1" type="checkbox"><label class="col-sm-1">Complete</label>`;
     domString +=   `</input>`;
+    domString +=   `<button class="btn btn-danger btn-xs col-sm-1 col-sm-offset-1" id="deleteTask">Delete</button>`;
     domString +=  `</div>`;
     domString += `</div>`;
   });
@@ -41,11 +43,10 @@ const newTask = (newTasks) => {
   let domString = '';
   domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${newTasks.id}'>`;
   domString +=  `<div class="panel-body row">`;
-  domString +=   `<p class="col-sm-6">${newTasks.task}</p>`;
-  domString +=   `<input class="checkbox col-sm-4" type="checkbox">`;
-  domString +=    `<label class="col-sm-2">Complete</label>`;
-  domString +=   `<button class="btn btn-danger col-sm-4" id="deleteTask">Delete</button>`;
+  domString +=   `<p class="col-sm-8 theTask">${newTasks.task}</p>`;
+  domString +=   `<input class="checkbox col-sm-1" type="checkbox"><label class="col-sm-1">Complete</label>`;
   domString +=   `</input>`;
+  domString +=   `<button class="btn btn-danger btn-xs col-sm-1 col-sm-offset-1" id="deleteTask">Delete</button>`;
   domString +=  `</div>`;
   domString += `</div>`;
   printTheTasks(domString);

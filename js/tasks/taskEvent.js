@@ -6,6 +6,7 @@ const clickTasks = () => {
   $(document).on('click', '#createTaskBtn', clickTaskButton);
   $(document).on('keypress', '#taskInput', pressEnter);
   $(document).on('click', '#deleteTask', deleteTask);
+  isItDone();
 };
 
 const taskTime = () => {
@@ -66,7 +67,6 @@ const getAllTasks = () => {
 const deleteTask = (e) => {
   const taskToDelete = $(e.target).closest('#taskCard').data('firebaseId');
   const panelToDelete = $(e.target).closest('#taskCard');
-  console.log(taskToDelete);
   taskFirebase.deleteTasks(taskToDelete)
     .then(() => {
       panelToDelete.remove();
@@ -74,6 +74,25 @@ const deleteTask = (e) => {
     .catch((error) => {
       console.error('error in deleting task', error);
     });
+};
+
+// Completing Task
+
+const isItDone = () => {
+  $(document).on('click', '.checkbox', (e) => {
+    const taskId = $(e.target).closest('#taskCard').data('firebaseId');
+    const taskToUpdate = $(e.target).closest('#taskCard');
+    const updatedTask = {
+      task: taskToUpdate.find('.theTask').text(),
+      isComplete: true,
+    };
+    taskFirebase.completedTask(updatedTask, taskId)
+      .then(() => {
+      })
+      .catch((error) => {
+        console.error('error on updated tasks', error);
+      });
+  });
 };
 
 module.exports = {
