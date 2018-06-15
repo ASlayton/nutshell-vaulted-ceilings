@@ -1,4 +1,4 @@
-const {checkUserLoginStatus,} = require('./auth');
+const {checkUserLoginStatus,} = require('./users/auth');
 const {setConfig,} = require('./firebaseApi');
 
 const apiKeys = () => {
