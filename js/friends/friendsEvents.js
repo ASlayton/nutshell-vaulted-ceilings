@@ -1,4 +1,4 @@
-const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb,} = require('./friendsCrud');
+const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb, deleteAFriend,} = require('./friendsCrud');
 const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
 
@@ -74,6 +74,19 @@ const addAFriendEvent = () =>
   });
 };
 
+// Remove A Friend From Your Friends List
+
+const removeFriend = () =>
+{
+  $(document).on('click', '.rmvFriend', (e) =>
+  {
+    const friendId = $(e.target).closest('.friendCard').data('firebaseid');
+    deleteAFriend(friendId)
+      .then(() => { showFriends(); })
+      .catch((err) => { console.error(err); });
+  });
+};
+
 // New Friend Request Indication
 
 const checkFriendRequest = () =>
@@ -98,7 +111,7 @@ const updateFriendsList = () =>
   {
     const friendToUpdateCard = $(e.target).closest('.friendCard');
     const friendUid = friendToUpdateCard.find('h3').data('frienduid');
-    const friendId = $(e.target).closest('.friendCard').data('firebaseid');
+    const friendId = $(e.target).closest('.friendRequestCard').data('firebaseid');
     const updatedFriend =
     {
       'username': friendToUpdateCard.find('h3').text(),
@@ -146,6 +159,7 @@ const initEvents = () =>
   addAFriendEvent();
   showMyFriends();
   updateFriendsList();
+  removeFriend();
 };
 
 module.exports =

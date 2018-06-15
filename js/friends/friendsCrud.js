@@ -143,7 +143,7 @@ const getFriendRequests = () =>
   });
 };
 
-// Update the friend object upon accept
+// Update the friend object upon accept or decline
 
 const updateFriendsDb = (updatedFriend, friendId) =>
 {
@@ -161,6 +161,22 @@ const updateFriendsDb = (updatedFriend, friendId) =>
   });
 };
 
+// Remove a friend
+
+const deleteAFriend = (friendId) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    $.ajax(
+      {
+        method: 'DELETE',
+        url: `${firebaseConfig.databaseURL}/friends/${friendId}.json`,
+      })
+      .done(() => { resolve(); })
+      .fail((err) => { reject(err); });
+  });
+};
+
 module.exports =
 {
   getAllUsers,
@@ -169,4 +185,5 @@ module.exports =
   addAFriend,
   getFriendRequests,
   updateFriendsDb,
+  deleteAFriend,
 };
