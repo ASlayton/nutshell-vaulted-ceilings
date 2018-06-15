@@ -1,5 +1,5 @@
-const {getAllUsers, addAFriend, getAllFriends,} = require('./friendsCrud');
-const {domStringBuild, friendsList,} = require('./friendsDom');;
+const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb,} = require('./friendsCrud');
+const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
 
 $('#friendsBtn').click(() =>
@@ -74,21 +74,69 @@ const addAFriendEvent = () =>
   });
 };
 
+// New Friend Request Indication
+
+const checkFriendRequest = () =>
+{
+  getFriendRequests()
+    .then((results) =>
+    {
+      const pending = results.length;
+      if (pending !== 0)
+      {
+        $('#friendsBtn').append(`<span class="badge">${pending}</span>`);
+      };
+    })
+    .catch();
+};
+
+// Update Your Friends List
+
+const updateFriendsList = () =>
+{
+  $(document).on('click', '.acceptMe', (e) =>
+  {
+    const friendToUpdateCard = $(e.target).closest('.friendCard');
+    const friendUid = friendToUpdateCard.find('h3').data('frienduid');
+    const friendId = $(e.target).closest('.friendCard').data('firebaseid');
+    const updatedFriend =
+    {
+      'username': friendToUpdateCard.find('h3').text(),
+      'friendUid': friendUid,
+      'isAccepted': true,
+      'isPending': false,
+    };
+    updateFriendsDb(updatedFriend, friendId)
+      .then(() => { showFriends(); })
+      .catch((err) => { console.error(err); });
+  });
+};
+
 // Show A list of your friends
+const showFriends = () =>
+{
+  getAllFriends()
+    .then((result) =>
+    {
+      console.log(result);
+      getFriendRequests()
+        .then((friendRequests) =>
+        {
+          friendsList(result);
+          friendRequestCard(friendRequests);
+        });
+    })
+    .catch((err) =>
+    {
+      console.error(err);
+    });
+};
 
 const showMyFriends = () =>
 {
-  $(document).click(() =>
+  $('#showFriendsBtn').click(() =>
   {
-    getAllFriends()
-      .then((result) =>
-      {
-        friendsList(result);
-      })
-      .catch((err) =>
-      {
-        console.error(err);
-      });
+    showFriends();
   });
 };
 
@@ -97,9 +145,11 @@ const initEvents = () =>
   getAllUsersEvent();
   addAFriendEvent();
   showMyFriends();
+  updateFriendsList();
 };
 
 module.exports =
 {
   initEvents,
+  checkFriendRequest,
 };

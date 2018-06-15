@@ -108,10 +108,65 @@ const addAFriend = (newFriend) =>
   });
 };
 
+// Gets a list of all pending friend requests and assigns them to the current user if they have been sent one
+
+const getFriendRequests = () =>
+{
+  const uid = firebase.auth().currentUser.uid;
+  return new Promise ((resolve, reject) =>
+  {
+    const allFRArr = [];
+    $.ajax(
+      {
+        method: 'GET',
+        url: `${firebaseConfig.databaseURL}/friends.json`,
+      })
+      .done((allFRObj) =>
+      {
+        if (allFRObj !== null)
+        {
+          Object.keys(allFRObj).forEach((fbKey) =>
+          {
+            allFRObj[fbKey].id = fbKey;
+            if (allFRObj[fbKey].friendUid === uid && allFRObj[fbKey].isAccepted === false && allFRObj[fbKey].isPending === true)
+            {
+              allFRArr.push(allFRObj[fbKey]);
+            }
+          });
+        }
+        resolve(allFRArr);
+      })
+      .fail((err) =>
+      {
+        reject(err);
+      });
+  });
+};
+
+// Update the friend object upon accept
+
+const updateFriendsDb = (updatedFriend, friendId) =>
+{
+  updatedFriend.uid = firebase.auth().currentUser.uid;
+  return new Promise ((resolve, reject) =>
+  {
+    $.ajax(
+      {
+        method: 'PUT',
+        url: `${firebaseConfig.databaseURL}/friends/${friendId}.json`,
+        data: JSON.stringify(updatedFriend),
+      })
+      .done((modifiedFriend) => { resolve(modifiedFriend); })
+      .fail((err) => { reject(err); });
+  });
+};
+
 module.exports =
 {
   getAllUsers,
   getFirebaseUrl,
   getAllFriends,
   addAFriend,
+  getFriendRequests,
+  updateFriendsDb,
 };

@@ -24,7 +24,7 @@ const friendsList = (friendsArr) =>
     domString += `<div class="panel panel-default">`;
     domString += `<div class="panel-body friendCard">`;
     domString += `<h3 data-friendUid="${user.uid}">${user.username} `;
-    if (user.isPending = true)
+    if (user.isPending === true)
     {
       domString += `<span class="label label-primary">Pending</span>`;
     }
@@ -36,8 +36,30 @@ const friendsList = (friendsArr) =>
   $('#myFriendsList').html(domString);
 };
 
+const friendRequestCard = (fRArr) =>
+{
+  let domString = '';
+  fRArr.forEach(user =>
+  {
+    domString += `<div class="col-md-100">`;
+    domString += `<div class="panel panel-default">`;
+    domString += `<div class="panel-body friendCard" data-firebaseId="${user.id}">`;
+    domString += `<h3 data-friendUid="${user.uid}" >${user.username} `;
+    domString += `</h3>`;
+    if (user.isPending === true)
+    {
+      domString += `<button class="btn btn-primary acceptMe">Accept</button>`;
+    }
+    domString += `</div>`;
+    domString += `</div>`;
+    domString += `</div>`;
+  });
+  $('#myFriendsList').append(domString);
+};
+
 module.exports =
 {
   domStringBuild,
   friendsList,
+  friendRequestCard,
 };

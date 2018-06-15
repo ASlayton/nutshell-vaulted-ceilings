@@ -1,4 +1,5 @@
 const {setUid,} = require('./firebaseApi');
+const {checkFriendRequest,} = require('./friends/friendsEvents');
 
 const checkUserLoginStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
@@ -7,6 +8,7 @@ const checkUserLoginStatus = () => {
       $('#auth').addClass('hide');
       $('#welcome, #logout').removeClass('hide');
       $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+      checkFriendRequest();
     } else {
       $('#auth').removeClass('hide');
       $('#welcome').addClass('hide');
