@@ -58,7 +58,7 @@ const friendRequestCard = (fRArr) =>
     domString += `</div>`;
     domString += `</div>`;
   });
-  $('#myFriendsList').append(domString);
+  $('#pendingFriendRequests').html(domString);
 };
 
 module.exports =

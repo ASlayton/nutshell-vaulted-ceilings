@@ -29,7 +29,43 @@ const getFirebaseUrl = () =>
     });
 };
 
+// This will not include the user
+
 const getAllUsers = () =>
+{
+  return new Promise ((resolve, reject) =>
+  {
+    const allUsersArr = [];
+    $.ajax(
+      {
+        method: 'GET',
+        url: `${firebaseConfig.databaseURL}/users.json`,
+      })
+      .done((allUsersObj) =>
+      {
+        if (allUsersObj !== null)
+        {
+          Object.keys(allUsersObj).forEach((fbKey) =>
+          {
+            allUsersObj[fbKey].id = fbKey;
+            if (allUsersObj[fbKey].uid !== firebase.auth().currentUser.uid)
+            {
+              allUsersArr.push(allUsersObj[fbKey]);
+            }
+          });
+        }
+        resolve(allUsersArr);
+      })
+      .fail((err) =>
+      {
+        reject(err);
+      });
+  });
+};
+
+// This will include the user
+
+const getUsers = () =>
 {
   return new Promise ((resolve, reject) =>
   {
@@ -77,6 +113,7 @@ const getAllFriends = () =>
           {
             allFriendsObj[fbKey].id = fbKey;
             allFriendsArr.push(allFriendsObj[fbKey]);
+
           });
         }
         resolve(allFriendsArr);
@@ -186,4 +223,5 @@ module.exports =
   getFriendRequests,
   updateFriendsDb,
   deleteAFriend,
+  getUsers,
 };

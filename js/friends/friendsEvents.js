@@ -1,11 +1,13 @@
-const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb, deleteAFriend,} = require('./friendsCrud');
+const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb, deleteAFriend, getUsers,} = require('./friendsCrud');
 const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
+const friendArr = [];
 
 $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#friends').prepend(firebase.auth().currentUser.username);
 });
 
 // Checks if the users are already on your friends list
@@ -30,7 +32,8 @@ const getNonFriends = () =>
             friendUid = friend.friendUid;
             if (addableUsers.findIndex(isFriends) !== -1)
             {
-              addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid);
+              addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
+              console.log(addableUsers);
             }
           });
           domStringBuild(addableUsers);
@@ -51,6 +54,18 @@ const getAllUsersEvent = () =>
 };
 
 // Adding a friend
+const setMyUsername = () =>
+{
+  getUsers().then((result) =>
+  {
+    result.forEach(element => {
+      if (element.uid === firebase.auth().currentUser.uid)
+      {
+        firebase.auth().currentUser.username = element.username;
+      }
+    });
+  }).catch();
+};
 
 const addAFriendEvent = () =>
 {
@@ -60,7 +75,7 @@ const addAFriendEvent = () =>
     const friendUid = friendToAddCard.find('h3').data('frienduid');
     const friendToAdd =
     {
-      'username': friendToAddCard.find('h3').text(),
+      'username': firebase.auth().currentUser.username,
       'friendUid': friendUid,
       'isAccepted': false,
       'isPending': true,
@@ -103,13 +118,13 @@ const checkFriendRequest = () =>
     .catch();
 };
 
-// Update Your Friends List
+// Update Your Friends List On Accept
 
 const updateFriendsList = () =>
 {
   $(document).on('click', '.acceptMe', (e) =>
   {
-    const friendToUpdateCard = $(e.target).closest('.friendCard');
+    const friendToUpdateCard = $(e.target).closest('.friendRequestCard');
     const friendUid = friendToUpdateCard.find('h3').data('frienduid');
     const friendId = $(e.target).closest('.friendRequestCard').data('firebaseid');
     const updatedFriend =
@@ -126,16 +141,40 @@ const updateFriendsList = () =>
 };
 
 // Show A list of your friends
+
+const findUserName = (userObj) =>
+{
+  getAllUsers()
+    .then((users) =>
+    {
+      users.forEach(user =>
+      {
+        if (user.uid === userObj.friendUid)
+        {
+          userObj.username = user.username;
+          console.log(userObj);
+          friendArr.push(userObj);
+        }
+      });
+    })
+    .catch((err) => { console.error(err); });
+
+};
+
 const showFriends = () =>
 {
   getAllFriends()
     .then((result) =>
     {
-      console.log(result);
       getFriendRequests()
         .then((friendRequests) =>
         {
-          friendsList(result);
+          result.forEach(friend => {
+            findUserName(friend);
+            console.log(friendArr);
+
+          });
+          friendsList(friendArr);
           friendRequestCard(friendRequests);
         });
     })
@@ -147,7 +186,7 @@ const showFriends = () =>
 
 const showMyFriends = () =>
 {
-  $('#showFriendsBtn').click(() =>
+  $(document).on('click', '#showFriendsBtn', (e) =>
   {
     showFriends();
   });
@@ -166,4 +205,5 @@ module.exports =
 {
   initEvents,
   checkFriendRequest,
+  setMyUsername,
 };
