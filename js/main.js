@@ -1,4 +1,4 @@
-const {authorizationEvents,} = require('./authEvents');
+const {authorizationEvents,} = require('./users/authEvents');
 const {retrieveKeys,} = require('./apiKeys');
 const taskMain = require('./tasks/taskMain');
 
