@@ -118,12 +118,12 @@ const checkFriendRequest = () =>
     .catch();
 };
 
-// Update The Senders Friends List On Accept
+// Update The Senders and Recievers Friends List On Accept
 
 const updateFriendsList = () =>
 {
   $(document).on('click', '.acceptMe', (e) =>
-  {
+  { // Update the reciever
     const friendToUpdateCard = $(e.target).closest('.friendRequestCard');
     const friendUid = friendToUpdateCard.find('h3').data('frienduid');
     const friendId = $(e.target).closest('.friendRequestCard').data('firebaseid');
@@ -136,7 +136,7 @@ const updateFriendsList = () =>
     };
     updateFriend(updatedFriend, friendId)
       .then(() =>
-      {
+      { // Update the sender
         const friendToUpdateCard = $(e.target).closest('.friendRequestCard');
         const friendUid = friendToUpdateCard.find('h3').data('frienduid');
         const newFriend =
@@ -148,35 +148,37 @@ const updateFriendsList = () =>
           'uid': friendUid,
         };
         addANewFriend(newFriend)
-          .then(() => { showFriends(); })
-          .catch((err) => { console.error(err); });
-        // addAFriend(friendToUpdateCard).then(() => { showFriends(); });
+          .then(() => { showFriends(); });
       })
       .catch((err) => { console.error(err); });
-
-    // updateRecieverFriendsList();
-    showFriends();
   });
 };
 
-// const updateRecieverFriendsList = () =>
-// {
-//   $(document).on('click', '.acceptMe', (e) =>
-//   {
-//     const friendToAddCard = $(e.target).closest('.friendRequestCard');
-//     const friendUid = friendToAddCard.find('h3').data('frienduid');
-//     const newFriend =
-//       {
-//         'username': friendToAddCard.find('h3').text(),
-//         'friendUid': friendUid,
-//         'isAccepted': true,
-//         'isPending': false,
-//       };
-//     addAFriend(newFriend)
-//       .then(() => { showFriends(); })
-//       .catch((err) => { console.error(err); });
-//   });
-// };
+// Update The Senders and Recievers Friends List On Decline
+
+const declineFR = () =>
+{
+  $(document).on('click', '.declineMe', (e) =>
+  {
+    const friendToUpdateCard = $(e.target).closest('.friendRequestCard');
+    const friendUid = friendToUpdateCard.find('h3').data('frienduid');
+    const friendId = $(e.target).closest('.friendRequestCard').data('firebaseid');
+    const updatedFriend =
+    {
+      'username': friendToUpdateCard.find('h3').text(),
+      'friendUid': friendUid,
+      'isAccepted': false,
+      'isPending': false,
+    };
+    updateFriend(updatedFriend, friendId)
+      .then(() =>
+      {
+        deleteAFriend(friendId);
+      })
+      .catch((err) => { console.error(err); });
+    showFriends();
+  });
+};
 
 // Show A list of your friends
 
@@ -233,6 +235,7 @@ const initEvents = () =>
   showMyFriends();
   updateFriendsList();
   removeFriend();
+  declineFR();
 };
 
 module.exports =

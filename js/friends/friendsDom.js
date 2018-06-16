@@ -53,6 +53,7 @@ const friendRequestCard = (fRArr) =>
     if (user.isPending === true)
     {
       domString += `<button class="btn btn-primary acceptMe">Accept</button>`;
+      domString += `<button class="btn btn-danger declineMe">Decline</button>`;
     }
     domString += `</div>`;
     domString += `</div>`;
