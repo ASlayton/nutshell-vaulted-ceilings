@@ -3,7 +3,7 @@ const {eventDomString,} = require('./eventsDom');
 
 const eventsFeatureEvents = () => {
   $('#eventsBtn').click(() => {
-    $('#events, #backBtn').removeClass('hide');
+    $('#events, #backBtn').fadeIn(500).removeClass('hide');
     $('#welcome').addClass('hide');
   });
 
@@ -16,10 +16,12 @@ const eventsFeatureEvents = () => {
     const eTitle = $('#eventTitle').val();
     const eDate = $('#eventDate').val();
     const eLocation = $('#eventLocation').val();
+    const userId = firebase.auth().currentUser.uid;
     const newEventObj = {
       title: eTitle,
       date: eDate,
       location: eLocation,
+      uid: userId,
     };
     saveNewEvent(newEventObj);
     $('#eventTitle, #eventDate, #eventLocation').val('');

@@ -6,8 +6,8 @@ const eventDomString = (eventArray) => {
     strang +=   `<div class="col-md-3 event-card" data-firebase-id="${event.id}">`;
     strang +=     `<h3 class="evt-title">${event.title}</h3>`;
     strang +=     `<ul class="list-group">`;
-    strang +=       `<li class="list-group-item"><span class="evt-date">${event.date}</li>`;
-    strang +=       `<li class="list-group-item"><span class="evt-loc">${event.location}</li>`;
+    strang +=       `<li class="list-group-item">Date: <span class="evt-date">${event.date}</li>`;
+    strang +=       `<li class="list-group-item">Location: <span class="evt-loc">${event.location}</li>`;
     strang +=     `</ul>`;
     strang +=   `<div class="btn-group" role="group">`;
     strang +=     `<button type="button" class="deleteEvent btn btn-primary btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>`;
