@@ -6,13 +6,9 @@ const checkUserLoginStatus = () => {
       $('#auth').addClass('hide');
       $('#messages').addClass('hide');
       $('#welcome, #logout').removeClass('hide');
-<<<<<<< HEAD
-      $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+      $('#users, #events, #tasks, #messages, #friends').addClass('hide');
       checkFriendRequest();
       setMyUsername();
-=======
-      $('#users, #events, #tasks, #messages, #friends').addClass('hide');
->>>>>>> master
     } else {
       $('#auth').removeClass('hide');
       $('#welcome, #logout').addClass('hide');

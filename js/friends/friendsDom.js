@@ -48,7 +48,7 @@ const friendRequestCard = (fRArr) =>
     domString += `<div class="col-md-100">`;
     domString += `<div class="panel panel-default">`;
     domString += `<div class="panel-body friendRequestCard" data-firebaseId="${user.id}">`;
-    domString += `<h3 data-friendUid="${user.uid}" >${user.username} `;
+    domString += `<h3 data-friendUid="${user.uid}" >${user.username}`;
     domString += `</h3>`;
     if (user.isPending === true)
     {
