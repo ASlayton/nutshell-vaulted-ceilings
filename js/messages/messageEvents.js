@@ -1,4 +1,14 @@
 const dom = require('./messageDom');
+// const messageFirebase = require('./messageFirebase');
+
+const clickMessageBtn = () => {
+  $(document).on('click', '#messagesBtn', showMessages);
+};
+
+const showMessages = () => {
+  $('#messages').removeClass('hide');
+  $('#welcome').addClass('hide');
+};
 
 const clickMessageSubmit = (() => {
   $('#message-submit').click((e) => {
@@ -19,6 +29,7 @@ const pressEnterMessage = () => {
 const initializer = () => {
   clickMessageSubmit();
   pressEnterMessage();
+  clickMessageBtn();
 };
 
 module.exports = {

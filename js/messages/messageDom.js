@@ -6,13 +6,6 @@ const addMessage = (message) => {
   messageString += `  </div>`;
   messageString += `</div>`;
   printToDom($('#message-container'), messageString);
-  // const elem = $('#message-container');
-  // elem.scrollTop = elem.scrollHeight;
-  // messageString += ``;
-  // messageString += ``;
-  // messageString += ``;
-  // messageString += ``;
-  // messageString += ``;
 };
 
 const printToDom = (whereToPrint, stringz) => {
