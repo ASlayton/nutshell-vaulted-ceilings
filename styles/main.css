@@ -46,11 +46,31 @@ body {
 }
 /* End Messages */
 
+/* Tasks */
+
 .taskPanel {
   margin-top: 2%;
+  margin-left: 4%;
+  margin-right: 4%;
+  padding: 0 2%;
+}
+
+.done p{
+  text-decoration-line: line-through;
+  color: red;
+}
+
+.done .checkbox {
+  visibility: hidden;
+}
+
+.done label {
+  visibility: hidden;
   margin-left: 2%;
   margin-right: 2%;
 }
+
+/* End Tasks */
 
 /* Friends */
 
