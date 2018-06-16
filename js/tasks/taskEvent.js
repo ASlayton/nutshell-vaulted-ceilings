@@ -30,6 +30,7 @@ const pressEnter = (e) => {
       .then(() => {
         taskDom.newTask(taskToAdd);
         $('#taskInput').val('');
+        taskTime();
       })
       .catch((error) => {
         console.error('error in creating task', error);
@@ -47,6 +48,7 @@ const clickTaskButton = () => {
     .then(() => {
       taskDom.newTask(taskToAdd);
       $('#taskInput').val('');
+      taskTime();
     })
     .catch((error) => {
       console.error('error in creating task', error);
