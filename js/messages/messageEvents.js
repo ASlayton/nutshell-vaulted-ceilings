@@ -13,10 +13,12 @@ const clickMessageSubmit = () => {
     if ($('#message-input').val() === '') {
       $('#message-submit:disabled');
     } else {
+      const message = $('#message-input').val();
+      const date = new Date();
+      const timestamp = date.getTime();
       const messageToAdd = {
-        uid: '',
-        message: '',
-        timestamp: '',
+        message: message,
+        timestamp: timestamp,
         isEdited: false,
       };
       createMessage(messageToAdd)
@@ -35,16 +37,18 @@ const clickMessageSubmit = () => {
 const pressEnterMessage = () => {
   $(document).on('keypress', (e) => {
     if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
+      const message = $('#message-input').val();
+      const date = new Date();
+      const timestamp = date.getTime();
       const messageToAdd = {
-        uid: '',
-        message: '',
-        timestamp: '',
+        message: message,
+        timestamp: timestamp,
         isEdited: false,
       };
       createMessage(messageToAdd)
         .then(() => {
-          const message = $('#message-input').val();
-          dom.addMessage(message);
+          // const message = $('#message-input').val();
+          dom.addMessage(messageToAdd);
           $('#message-input').val('');
         })
         .catch((error) => {
@@ -54,34 +58,17 @@ const pressEnterMessage = () => {
   });
 };
 
-//   $(document).on('keypress', (e) => {
-//     if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
-
-//     }
-//     const messageToAdd = {
-//       uid: '',
-//       message: 'Whats up?',
-//       timestamp: 1528763298535,
-//       isEdited: false,
-//     };
-//     createMessage(messageToAdd).then(() => {
-//       const inputMessage = $('#message-input').val();
-//       dom.addMessage(inputMessage);
-//     })
-//       .catch((err) =>
-//       {
-//         console.error('Error in adding a message', err);
-//       });
-//   });
-// };
-
 // Delete message
 const deleteMessageEvent = () => {
   $(document).on('click', '.deleteMessageBtn', (e) => {
-    const messageToDeleteId = $(e.target).closest('.message').data('firebaseId');
+    const messageToDeleteId = $(e.target).closest('.message-card').data('firebaseId');
+    const messageToDeleteCard = $(e.target).closest('.speech-bubble');
+    console.log(messageToDeleteId);
     deleteMessage(messageToDeleteId)
       .then(() => {
+        messageToDeleteCard.remove();
         getAllMessages();
+        // dom.addMessage();
       })
       .catch((error) => {
         console.error('error from delete message', error);

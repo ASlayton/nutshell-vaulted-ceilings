@@ -1,8 +1,8 @@
-let firebaseConfig = () => {};
+const {getConfig,} = require('./../firebaseApi');
 let uid = '';
 
 const setConfig = (fbConfig) => {
-  firebaseConfig = fbConfig;
+  getConfig = fbConfig;
 };
 
 const setUID = (newUID) => {
@@ -34,42 +34,14 @@ const getFirebaseUrl = () =>
     });
 };
 
-// const getAllUsers = () =>
-// {
-//   return new Promise ((resolve, reject) =>
-//   {
-//     const allUsersArr = [];
-//     $.ajax(
-//       {
-//         method: 'GET',
-//         url: `${firebaseConfig.databaseURL}/users.json`,
-//       })
-//       .done((allUsersObj) =>
-//       {
-//         if (allUsersObj !== null)
-//         {
-//           Object.keys(allUsersObj).forEach((fbKey) =>
-//           {
-//             allUsersObj[fbKey].id = fbKey;
-//             allUsersArr.push(allUsersObj[fbKey]);
-//           });
-//         }
-//         resolve(allUsersArr);
-//       })
-//       .fail((err) =>
-//       {
-//         reject(err);
-//       });
-//   });
-// };
-
 // [C]REATE
 const createMessage = (newMessage) => {
   newMessage.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
+    const config = getConfig();
     $.ajax({
       method: 'POST',
-      url: `https://nutshell-vaulted.firebaseio.com/messages.json`,
+      url: `${config.databaseURL}/messages.json`,
       data: JSON.stringify(newMessage),
     })
       .done((uniqueKey) => {
@@ -84,10 +56,12 @@ const createMessage = (newMessage) => {
 // [R]EAD
 const getAllMessages = () => {
   return new Promise((resolve, reject) => {
+    const config = getConfig();
+    const uid = firebase.auth().currentUser.uid;
     const allMessagesArray = [];
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/messages.json?orderBy="uid"&equalTo="${uid}"`,
+      url: `${config.databaseURL}/messages.json?orderBy="uid"&equalTo="${uid}"`,
     })
       .done((allMessagesObj) => {
         if (allMessagesObj !== null) {
@@ -108,9 +82,10 @@ const getAllMessages = () => {
 const editMessage = (editedMessage, messageId) => {
   editedMessage.uid = uid;
   return new Promise((resolve, reject) => {
+    const config = getConfig();
     $.ajax({
       method: 'PUT',
-      url: `${firebaseConfig.databaseURL}/messages/${messageId}.json`,
+      url: `${config.databaseURL}/messages/${messageId}.json`,
       data: JSON.stringify(editedMessage),
     })
       .done((modifiedMessage) => {
@@ -125,9 +100,10 @@ const editMessage = (editedMessage, messageId) => {
 // [D]ELETE
 const deleteMessage = (messageId) => {
   return new Promise((resolve, reject) => {
+    const config = getConfig();
     $.ajax({
       method: 'DELETE',
-      url: `${firebaseConfig.databaseURL}/messages/${messageId}.json`,
+      url: `${config.databaseURL}/messages/${messageId}.json`,
     })
       .done(() => {
         resolve();
