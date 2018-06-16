@@ -1,38 +1,4 @@
 const {getConfig,} = require('./../firebaseApi');
-let uid = '';
-
-const setConfig = (fbConfig) => {
-  getConfig = fbConfig;
-};
-
-const setUID = (newUID) => {
-  uid = newUID;
-};
-
-const apiKeys = () => {
-  return new Promise((resolve, reject) => {
-    $.ajax('./db/apiKey.json')
-      .done((data) => {
-        resolve(data.apiKeys);
-      })
-      .fail((err) => {
-        reject(err);
-      });
-  });
-};
-
-const getFirebaseUrl = () =>
-{
-  apiKeys()
-    .then((result) =>
-    {
-      setConfig(result.firebase);
-    })
-    .catch((err) =>
-    {
-      console.error(err);
-    });
-};
 
 // [C]REATE
 const createMessage = (newMessage) => {
@@ -56,9 +22,9 @@ const createMessage = (newMessage) => {
 // [R]EAD
 const getAllMessages = () => {
   return new Promise((resolve, reject) => {
+    const allMessagesArray = [];
     const config = getConfig();
     const uid = firebase.auth().currentUser.uid;
-    const allMessagesArray = [];
     $.ajax({
       method: 'GET',
       url: `${config.databaseURL}/messages.json?orderBy="uid"&equalTo="${uid}"`,
@@ -80,7 +46,7 @@ const getAllMessages = () => {
 
 // [U]PDATE
 const editMessage = (editedMessage, messageId) => {
-  editedMessage.uid = uid;
+  editedMessage.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
     const config = getConfig();
     $.ajax({
@@ -115,12 +81,8 @@ const deleteMessage = (messageId) => {
 };
 
 module.exports = {
-  // getAllUsers,
-  getFirebaseUrl,
   createMessage,
   getAllMessages,
   editMessage,
   deleteMessage,
-  setUID,
-  setConfig,
 };
