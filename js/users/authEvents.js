@@ -35,7 +35,7 @@ const authorizationEvents = () => {
                 .then(() => {
                   $('#auth').addClass('hide');
                   $('#welcome, #logout').removeClass('hide');
-                  $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+                  $('#users, #events, #tasks, #friends, #messages, #backBtn').addClass('hide');
                 });
             })
             .catch((error) => {
@@ -65,7 +65,7 @@ const authorizationEvents = () => {
         // Sign-out successful.
         $('#auth').removeClass('hide');
         $('#welcome, #logout').addClass('hide');
-        $('#users, #events, #tasks, #friends, #messages').addClass('hide');
+        $('#users, #events, #tasks, #friends, #messages, #backBtn').addClass('hide');
         $('#inputPassword, #inputEmail, #registerPassword, #registerEmail, #registerUsername').val('');
       })
       .catch((error) => {

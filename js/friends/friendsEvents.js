@@ -6,6 +6,7 @@ $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#backBtn').removeClass('hide');
 });
 
 // Checks if the users are already on your friends list

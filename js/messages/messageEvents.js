@@ -1,10 +1,10 @@
 const {createMessage, deleteMessage, getAllMessages,} = require('./messageFirebase');   // getAllUsers, editMessage,
 const dom = require('./messageDom');
 
-$('#messagesBtn').click(() =>
-{
+$('#messagesBtn').click(() => {
   $('#messages').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#backBtn').removeClass('hide');
 });
 
 // Enter message events
