@@ -75,6 +75,15 @@ body {
 }
 /* End Tasks */
 
+/* Events */
+.event-card {
+  background-color: #5bc0de;
+  margin: 2% 1.5%;
+  border-radius: 5px;
+}
+.btn-group {
+  margin-bottom: 10px;
+}
 /* Friends */
 
 .friendCard {
