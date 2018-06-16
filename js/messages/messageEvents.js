@@ -1,4 +1,4 @@
-const {createMessage,} = require('./messageFirebase');   // getAllUsers, deleteMessage, editMessage, getAllMessages,
+const {createMessage, deleteMessage, getAllMessages,} = require('./messageFirebase');   // getAllUsers, editMessage,
 const dom = require('./messageDom');
 // const messageFirebase = require('./messageFirebase');
 
@@ -33,23 +33,23 @@ const pressEnterMessage = () => {
 };
 
 // Delete message
-// const deleteMessage = () => {
-//   $(document).on('click', '.deleteMessageBtn', (e) => {
-//     const messageToDeleteId = $(e.target).closest('.message').data('firebaseId');
-//     firebaseApi.deleteForecastFromDb(forecastToDeleteId)
-//       .then(() => {
-//         getMessages();
-//       })
-//       .catch((error) => {
-//         console.error('error from delete message', error);
-//       });
-//   });
-// };
+const deleteMessageEvent = () => {
+  $(document).on('click', '.deleteMessageBtn', (e) => {
+    const messageToDeleteId = $(e.target).closest('.message').data('firebaseId');
+    deleteMessage(messageToDeleteId)
+      .then(() => {
+        getAllMessages();
+      })
+      .catch((error) => {
+        console.error('error from delete message', error);
+      });
+  });
+};
 
 const initializer = () => {
   clickMessageSubmit();
   pressEnterMessage();
-  // deleteMessage();
+  deleteMessageEvent();
 };
 
 module.exports = {
