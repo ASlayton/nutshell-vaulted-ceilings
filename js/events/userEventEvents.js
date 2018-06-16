@@ -4,7 +4,7 @@ const eventsFeatureEvents = () => {
     $('#welcome').addClass('hide');
   });
 
-  $('.dashboard').click(() => {
+  $('#eventsBackBtn').click(() => {
     $('#events').addClass('hide');
     $('#welcome').removeClass('hide');
   });
