@@ -8,6 +8,37 @@ body {
   max-width: 90%;
   font-size: 50px;
 }
+
+.speech-bubble {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	position: relative;
+	border: 1px solid black;
+  border-radius: .4em;
+  margin: 10px;
+  max-width: 70%;
+  border-radius: 10px;
+  padding: 5px;
+}
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 100%;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-right-color: black;
+	border-left: 0;
+	border-bottom: 0;
+	margin-top: -10px;
+  margin-left: -5px;
+}
 #message-container {
   border: black 1px solid;
   height: 500px;

@@ -121,15 +121,13 @@
     <!-- MESSAGEBOARD -->
     <div id="messages" class=""> <!-- ADD BACK HIDE CLASS-->
       <div class="row">
-        <div id="message-container" class="col-md-6 col-md-offset-3">
-          <div id="message-list"></div> 
-        </div>
+        <div id="message-container" class="col-md-6 col-md-offset-3 pre-scrollable"></div>
       </div> <!--END FIRST ROW-->
       <div class="row">
-        <div id="message-input" class="form-group col-md-6 col-md-offset-3">
+        <div class="form-group col-md-6 col-md-offset-3">
           <div class="input-group">
-              <input type="text" class="form-control input-lg" value="Enter a message" />
-              <span class="input-group-addon"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></span>
+              <input type="text" id="message-input" class="form-control input-lg" placeholder="Enter a message">
+              <span class="input-group-btn"><button class="btn" id="message-submit"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button></span>
           </div>
         </div>
       </div>  <!--END SECOND ROW-->
