@@ -1,6 +1,5 @@
 const {createMessage, deleteMessage, getAllMessages,} = require('./messageFirebase');   // getAllUsers, editMessage,
 const dom = require('./messageDom');
-// const messageFirebase = require('./messageFirebase');
 
 $('#messagesBtn').click(() =>
 {
@@ -8,6 +7,7 @@ $('#messagesBtn').click(() =>
   $('#welcome').addClass('hide');
 });
 
+// Enter message events
 const clickMessageSubmit = () => {
   $('#message-submit').click((e) => {
     const inputMessage = $('#message-input').val();
@@ -15,28 +15,47 @@ const clickMessageSubmit = () => {
   });
 };
 
-// Create new message Event
 const pressEnterMessage = () => {
   $(document).on('keypress', (e) => {
     if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
-
-    }
-    const messageToAdd = {
-      uid: '',
-      message: 'Whats up?',
-      timestamp: 1528763298535,
-      isEdited: false,
+      const messageToAdd = {
+        uid: '',
+        message: '',
+        timestamp: '',
+        isEdited: false,
+      };
+      createMessage(messageToAdd)
+        .then(() => {
+          const message = $('#message-input').val();
+          dom.addMessage(message);
+        })
+        .catch((error) => {
+          console.error('error in creating message', error);
+        });
     };
-    createMessage(messageToAdd).then(() => {
-      const inputMessage = $('#message-input').val();
-      dom.addMessage(inputMessage);
-    })
-      .catch((err) =>
-      {
-        console.error('Error in adding a message', err);
-      });
   });
 };
+
+//   $(document).on('keypress', (e) => {
+//     if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
+
+//     }
+//     const messageToAdd = {
+//       uid: '',
+//       message: 'Whats up?',
+//       timestamp: 1528763298535,
+//       isEdited: false,
+//     };
+//     createMessage(messageToAdd).then(() => {
+//       const inputMessage = $('#message-input').val();
+//       dom.addMessage(inputMessage);
+//     })
+//       .catch((err) =>
+//       {
+//         console.error('Error in adding a message', err);
+//       });
+//   });
+// };
 
 // Delete message
 const deleteMessageEvent = () => {
