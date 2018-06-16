@@ -1,8 +1,9 @@
-const {saveNewEvent,} = require('./eventsFirebase');
+const {saveNewEvent, getAllEventsFromFb,} = require('./eventsFirebase');
+const {eventDomString,} = require('./eventsDom');
 
 const eventsFeatureEvents = () => {
   $('#eventsBtn').click(() => {
-    $('#events').removeClass('hide');
+    $('#events, #backBtn').removeClass('hide');
     $('#welcome').addClass('hide');
   });
 
@@ -21,9 +22,22 @@ const eventsFeatureEvents = () => {
       location: eLocation,
     };
     saveNewEvent(newEventObj);
+    $('#eventTitle, #eventDate, #eventLocation').val('');
+    retrieveAllEvents();
   });
+};
+
+const retrieveAllEvents = () => {
+  getAllEventsFromFb()
+    .then((results) => {
+      eventDomString(results);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 module.exports = {
   eventsFeatureEvents,
+  retrieveAllEvents,
 };
