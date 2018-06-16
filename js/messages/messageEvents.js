@@ -19,16 +19,22 @@ const clickMessageSubmit = () => {
 const pressEnterMessage = () => {
   $(document).on('keypress', (e) => {
     if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
-      const inputMessage = $('#message-input').val();
-      dom.addMessage(inputMessage);
+
     }
     const messageToAdd = {
-      userUid: '',
+      uid: '',
       message: 'Whats up?',
       timestamp: 1528763298535,
       isEdited: false,
     };
-    createMessage(messageToAdd);
+    createMessage(messageToAdd).then(() => {
+      const inputMessage = $('#message-input').val();
+      dom.addMessage(inputMessage);
+    })
+      .catch((err) =>
+      {
+        console.error('Error in adding a message', err);
+      });
   });
 };
 

@@ -34,38 +34,38 @@ const getFirebaseUrl = () =>
     });
 };
 
-const getAllUsers = () =>
-{
-  return new Promise ((resolve, reject) =>
-  {
-    const allUsersArr = [];
-    $.ajax(
-      {
-        method: 'GET',
-        url: `${firebaseConfig.databaseURL}/users.json`,
-      })
-      .done((allUsersObj) =>
-      {
-        if (allUsersObj !== null)
-        {
-          Object.keys(allUsersObj).forEach((fbKey) =>
-          {
-            allUsersObj[fbKey].id = fbKey;
-            allUsersArr.push(allUsersObj[fbKey]);
-          });
-        }
-        resolve(allUsersArr);
-      })
-      .fail((err) =>
-      {
-        reject(err);
-      });
-  });
-};
+// const getAllUsers = () =>
+// {
+//   return new Promise ((resolve, reject) =>
+//   {
+//     const allUsersArr = [];
+//     $.ajax(
+//       {
+//         method: 'GET',
+//         url: `${firebaseConfig.databaseURL}/users.json`,
+//       })
+//       .done((allUsersObj) =>
+//       {
+//         if (allUsersObj !== null)
+//         {
+//           Object.keys(allUsersObj).forEach((fbKey) =>
+//           {
+//             allUsersObj[fbKey].id = fbKey;
+//             allUsersArr.push(allUsersObj[fbKey]);
+//           });
+//         }
+//         resolve(allUsersArr);
+//       })
+//       .fail((err) =>
+//       {
+//         reject(err);
+//       });
+//   });
+// };
 
 // [C]REATE
 const createMessage = (newMessage) => {
-  newMessage.userUid = firebase.auth().currentUser.uid;
+  newMessage.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
     $.ajax({
       method: 'POST',
@@ -139,7 +139,7 @@ const deleteMessage = (messageId) => {
 };
 
 module.exports = {
-  getAllUsers,
+  // getAllUsers,
   getFirebaseUrl,
   createMessage,
   getAllMessages,
