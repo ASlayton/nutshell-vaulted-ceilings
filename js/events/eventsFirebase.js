@@ -49,7 +49,24 @@ const saveNewEvent = (newEventObj) => {
   });
 };
 
+const deleteEvent = (id) => {
+  return new Promise((resolve, reject) => {
+    firebaseConfig = getConfig();
+    $.ajax({
+      method: 'DELETE',
+      url: `${firebaseConfig.databaseURL}/events/${id}.json`,
+    })
+      .done(() => {
+        resolve();
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
+
 module.exports = {
   saveNewEvent,
   getAllEventsFromFb,
+  deleteEvent,
 };
