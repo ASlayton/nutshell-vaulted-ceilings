@@ -10,8 +10,25 @@ $('#messagesBtn').click(() => {
 // Enter message events
 const clickMessageSubmit = () => {
   $('#message-submit').click((e) => {
-    const inputMessage = $('#message-input').val();
-    dom.addMessage(inputMessage);
+    if ($('#message-input').val() === '') {
+      $('#message-submit:disabled');
+    } else {
+      const messageToAdd = {
+        uid: '',
+        message: '',
+        timestamp: '',
+        isEdited: false,
+      };
+      createMessage(messageToAdd)
+        .then(() => {
+          const message = $('#message-input').val();
+          dom.addMessage(message);
+          $('#message-input').val('');
+        })
+        .catch((error) => {
+          console.error('error in creating message', error);
+        });
+    };
   });
 };
 
@@ -28,6 +45,7 @@ const pressEnterMessage = () => {
         .then(() => {
           const message = $('#message-input').val();
           dom.addMessage(message);
+          $('#message-input').val('');
         })
         .catch((error) => {
           console.error('error in creating message', error);
