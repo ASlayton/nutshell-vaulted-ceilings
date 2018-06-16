@@ -1,13 +1,14 @@
-const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend,} = require('./friendsCrud');
+const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
 const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
 const friendArr = [];
+// const myFriend = [];
 
 $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
-  $('#friends').prepend(firebase.auth().currentUser.username);
+  $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
 });
 
 // Checks if the users are already on your friends list
@@ -24,7 +25,7 @@ const getNonFriends = () =>
   getAllUsers()
     .then((addableUsers) =>
     {
-      getAllFriends()
+      getMyFriends()
         .then((myFriendsList) =>
         {
 
@@ -97,10 +98,45 @@ const removeFriend = () =>
   {
     const friendId = $(e.target).closest('.friendCard').data('firebaseid');
     deleteAFriend(friendId)
-      .then(() => { showFriends(); })
-      .catch((err) => { console.error(err); });
+      .then().catch((err) => { console.error(err); });
   });
 };
+
+$(document).on('click', '.rmvFriend', (e) =>
+{
+  getAllFriends().then((allFriends) =>
+  {
+    allFriends.forEach((friend) =>
+    {
+      const myUid = `${firebase.auth().currentUser.uid}`;
+      const myUsername = `${firebase.auth().currentUser.username}`;
+      if (friend.friendUid === myUid) // && friend.uid === friendUid)
+      {
+        getAllUsers()
+          .then((users) =>
+          {
+            users.forEach(user =>
+            {
+              const friendToDel = $(e.target).closest('.friendCard');
+              const friendUsername = friendToDel.find('h3').text();
+              let friendUid = friendToDel.find('h3').data('frienduid');
+              if (user.username === friendUsername)
+              {
+                friendUid = user.uid;
+                if (friend.uid === friendUid && friend.username === myUsername)
+                {
+                  deleteAFriend(friend.id);
+                }
+              }
+            });
+          });
+      };
+    });
+  }).catch((err) =>
+  {
+    console.error(err);
+  });
+});
 
 // New Friend Request Indication
 
@@ -120,7 +156,7 @@ const checkFriendRequest = () =>
 
 // Update The Senders and Recievers Friends List On Accept
 
-const updateFriendsList = () =>
+const acceptFR = () =>
 {
   $(document).on('click', '.acceptMe', (e) =>
   { // Update the reciever
@@ -180,8 +216,7 @@ const declineFR = () =>
   });
 };
 
-// Show A list of your friends
-
+// Returns the username of the given user
 const findUserName = (userObj) =>
 {
   getAllUsers()
@@ -199,9 +234,28 @@ const findUserName = (userObj) =>
     .catch((err) => { console.error(err); });
 };
 
+// const findUid = (userObj) =>
+// {
+//   getAllUsers()
+//     .then((users) =>
+//     {
+//       users.forEach(user =>
+//       {
+//         if (user.username === userObj.friendUid)
+//         {
+//           userObj.username = user.username;
+//           friendArr.push(userObj);
+//         }
+//       });
+//     })
+//     .catch((err) => { console.error(err); });
+// };
+
+// Show A list of your friends
+
 const showFriends = () =>
 {
-  getAllFriends()
+  getMyFriends()
     .then((result) =>
     {
       getFriendRequests()
@@ -233,7 +287,7 @@ const initEvents = () =>
   getAllUsersEvent();
   addAFriendEvent();
   showMyFriends();
-  updateFriendsList();
+  acceptFR();
   removeFriend();
   declineFR();
 };

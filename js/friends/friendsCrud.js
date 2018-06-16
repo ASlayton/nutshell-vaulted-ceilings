@@ -94,7 +94,7 @@ const getUsers = () =>
   });
 };
 
-const getAllFriends = () =>
+const getMyFriends = () =>
 {
   const uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) =>
@@ -104,6 +104,36 @@ const getAllFriends = () =>
       {
         method: 'GET',
         url: `${firebaseConfig.databaseURL}/friends.json?orderBy="uid"&equalTo="${uid}"`,
+      })
+      .done((allFriendsObj) =>
+      {
+        if (allFriendsObj !== null)
+        {
+          Object.keys(allFriendsObj).forEach((fbKey) =>
+          {
+            allFriendsObj[fbKey].id = fbKey;
+            allFriendsArr.push(allFriendsObj[fbKey]);
+
+          });
+        }
+        resolve(allFriendsArr);
+      })
+      .fail((err) =>
+      {
+        reject(err);
+      });
+  });
+};
+
+const getAllFriends = () =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    const allFriendsArr = [];
+    $.ajax(
+      {
+        method: 'GET',
+        url: `${firebaseConfig.databaseURL}/friends.json`,
       })
       .done((allFriendsObj) =>
       {
@@ -244,4 +274,5 @@ module.exports =
   deleteAFriend,
   getUsers,
   addANewFriend,
+  getMyFriends,
 };
