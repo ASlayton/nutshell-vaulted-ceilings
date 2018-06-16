@@ -1,4 +1,4 @@
-const {saveNewEvent, getAllEventsFromFb,} = require('./eventsFirebase');
+const {saveNewEvent, getAllEventsFromFb, deleteEvent,} = require('./eventsFirebase');
 const {eventDomString,} = require('./eventsDom');
 
 const eventsFeatureEvents = () => {
@@ -37,7 +37,21 @@ const retrieveAllEvents = () => {
     });
 };
 
+const deleteAnEvent = () => {
+  $(document).on('click','.deleteEvent', (e) => {
+    const eventToDelete = $(e.target).closest('.event-card').data('firebaseId');
+    deleteEvent(eventToDelete)
+      .then(() => {
+        retrieveAllEvents();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+};
+
 module.exports = {
   eventsFeatureEvents,
   retrieveAllEvents,
+  deleteAnEvent,
 };
