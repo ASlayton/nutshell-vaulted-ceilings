@@ -46,6 +46,8 @@ body {
 }
 /* End Messages */
 
+/* Tasks */
+
 .taskPanel {
   margin-top: 2%;
   margin-left: 4%;
@@ -67,6 +69,8 @@ body {
   margin-left: 2%;
   margin-right: 2%;
 }
+
+/* End Tasks */
 
 /* Friends */
 
