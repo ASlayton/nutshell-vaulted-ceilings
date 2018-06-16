@@ -33,7 +33,6 @@ const getNonFriends = () =>
             if (addableUsers.findIndex(isFriends) !== -1)
             {
               addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
-              console.log(addableUsers);
             }
           });
           domStringBuild(addableUsers);
@@ -118,7 +117,7 @@ const checkFriendRequest = () =>
     .catch();
 };
 
-// Update Your Friends List On Accept
+// Update The Senders Friends List On Accept
 
 const updateFriendsList = () =>
 {
@@ -137,7 +136,26 @@ const updateFriendsList = () =>
     updateFriendsDb(updatedFriend, friendId)
       .then(() => { showFriends(); })
       .catch((err) => { console.error(err); });
+
+    updateRecieverFriendsList();
+    showFriends();
   });
+};
+
+const updateRecieverFriendsList = (e) =>
+{
+  const friendToAddCard = $(e.target).closest('.friendRequestCard');
+  const friendUid = friendToAddCard.find('h3').data('frienduid');
+  const newFriend =
+    {
+      'username': friendToAddCard.find('h3').text(),
+      'friendUid': friendUid,
+      'isAccepted': true,
+      'isPending': false,
+    };
+  addAFriend(newFriend)
+    .then(() => { showFriends(); })
+    .catch((err) => { console.error(err); });
 };
 
 // Show A list of your friends
@@ -152,7 +170,6 @@ const findUserName = (userObj) =>
         if (user.uid === userObj.friendUid)
         {
           userObj.username = user.username;
-          console.log(userObj);
           friendArr.push(userObj);
         }
       });
@@ -171,8 +188,6 @@ const showFriends = () =>
         {
           result.forEach(friend => {
             findUserName(friend);
-            console.log(friendArr);
-
           });
           friendsList(friendArr);
           friendRequestCard(friendRequests);
