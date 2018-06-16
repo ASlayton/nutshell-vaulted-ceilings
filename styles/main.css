@@ -49,18 +49,23 @@ body {
 /* Tasks */
 
 .taskPanel {
-  margin-top: 2%;
+  margin-top: 1%;
   margin-left: 15%;
   margin-right: 15%;
   padding: 0 2%;
-  background-color: rgba(255, 243, 139, 0.5);
+  background-color: rgba(243, 156, 17, .75);
+  color: white;
+}
+
+.colorMeOrange {
+  color: rgba(243, 156, 17);
 }
 
 .done {
-  background-color: rgb(170, 209, 111, .5);
+  background-color: rgb(170, 209, 111, .7);
 }
 
-.done p{
+.done h4{
   text-decoration-line: line-through;
   color: red;
 }

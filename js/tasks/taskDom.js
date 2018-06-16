@@ -10,10 +10,11 @@ const taskString = () => {
   let strang = '';
   strang += `<div class="row">`;
   strang +=   `<div class="col-sm-6 col-sm-offset-3">`;
+  strang +=     `<h1 class="colorMeOrange">Tasks</h1>`;
   strang +=     `<div class="input-group">`;
   strang +=       `<input type="text" class="form-control" id="taskInput" placeholder="New Task">`;
   strang +=        `<span class="input-group-btn" id="createTaskBtn">`;
-  strang +=         `<button class="btn btn-success" type="button">Go!</button>`;
+  strang +=         `<button class="btn btn-warning" type="button">Go!</button>`;
   strang +=        `</span>`;
   strang +=     `</div>`;
   strang +=   `</div>`;
@@ -29,7 +30,7 @@ const theTasksDom = (taskArray) => {
     } else { domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${task.id}'>`;
     }
     domString +=  `<div class="panel-body row">`;
-    domString +=   `<p class="col-sm-8 theTask">${task.task}</p>`;
+    domString +=   `<h4 class="col-sm-8 theTask">${task.task}</h4>`;
     domString +=   `<input class="checkbox col-sm-1" type="checkbox"><label class="col-sm-1">Complete</label>`;
     domString +=   `</input>`;
     domString +=   `<button class="btn btn-danger btn-xs col-sm-1 col-sm-offset-1" id="deleteTask">Delete</button>`;
@@ -43,7 +44,7 @@ const newTask = (newTasks) => {
   let domString = '';
   domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${newTasks.id}'>`;
   domString +=  `<div class="panel-body row">`;
-  domString +=   `<p class="col-sm-8 theTask">${newTasks.task}</p>`;
+  domString +=   `<h4 class="col-sm-8 theTask">${newTasks.task}</h4>`;
   domString +=   `<input class="checkbox col-sm-1" type="checkbox"><label class="col-sm-1">Complete</label>`;
   domString +=   `</input>`;
   domString +=   `<button class="btn btn-danger btn-xs col-sm-1 col-sm-offset-1" id="deleteTask">Delete</button>`;
