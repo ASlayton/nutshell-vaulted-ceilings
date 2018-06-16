@@ -15,7 +15,6 @@ body {
   margin-right: 2%;
 }
 
-/* .header-row {
-  display: flex;
-  align-items: center;
-} */
+.header-row {
+  line-height: 50px;
+}
