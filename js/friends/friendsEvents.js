@@ -1,4 +1,4 @@
-const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriendsDb, deleteAFriend, getUsers,} = require('./friendsCrud');
+const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend,} = require('./friendsCrud');
 const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
 const friendArr = [];
@@ -27,6 +27,7 @@ const getNonFriends = () =>
       getAllFriends()
         .then((myFriendsList) =>
         {
+
           myFriendsList.forEach(friend =>
           {
             friendUid = friend.friendUid;
@@ -133,30 +134,49 @@ const updateFriendsList = () =>
       'isAccepted': true,
       'isPending': false,
     };
-    updateFriendsDb(updatedFriend, friendId)
-      .then(() => { showFriends(); })
+    updateFriend(updatedFriend, friendId)
+      .then(() =>
+      {
+        const friendToUpdateCard = $(e.target).closest('.friendRequestCard');
+        const friendUid = friendToUpdateCard.find('h3').data('frienduid');
+        const newFriend =
+        {
+          'username': `${firebase.auth().currentUser.username}`,
+          'friendUid': `${firebase.auth().currentUser.uid}`,
+          'isAccepted': true,
+          'isPending': false,
+          'uid': friendUid,
+        };
+        addANewFriend(newFriend)
+          .then(() => { showFriends(); })
+          .catch((err) => { console.error(err); });
+        // addAFriend(friendToUpdateCard).then(() => { showFriends(); });
+      })
       .catch((err) => { console.error(err); });
 
-    updateRecieverFriendsList();
+    // updateRecieverFriendsList();
     showFriends();
   });
 };
 
-const updateRecieverFriendsList = (e) =>
-{
-  const friendToAddCard = $(e.target).closest('.friendRequestCard');
-  const friendUid = friendToAddCard.find('h3').data('frienduid');
-  const newFriend =
-    {
-      'username': friendToAddCard.find('h3').text(),
-      'friendUid': friendUid,
-      'isAccepted': true,
-      'isPending': false,
-    };
-  addAFriend(newFriend)
-    .then(() => { showFriends(); })
-    .catch((err) => { console.error(err); });
-};
+// const updateRecieverFriendsList = () =>
+// {
+//   $(document).on('click', '.acceptMe', (e) =>
+//   {
+//     const friendToAddCard = $(e.target).closest('.friendRequestCard');
+//     const friendUid = friendToAddCard.find('h3').data('frienduid');
+//     const newFriend =
+//       {
+//         'username': friendToAddCard.find('h3').text(),
+//         'friendUid': friendUid,
+//         'isAccepted': true,
+//         'isPending': false,
+//       };
+//     addAFriend(newFriend)
+//       .then(() => { showFriends(); })
+//       .catch((err) => { console.error(err); });
+//   });
+// };
 
 // Show A list of your friends
 
@@ -175,7 +195,6 @@ const findUserName = (userObj) =>
       });
     })
     .catch((err) => { console.error(err); });
-
 };
 
 const showFriends = () =>

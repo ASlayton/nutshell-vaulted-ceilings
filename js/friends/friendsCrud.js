@@ -145,6 +145,25 @@ const addAFriend = (newFriend) =>
   });
 };
 
+const addANewFriend = (newFriend) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    $.ajax(
+      {
+        method: 'POST',
+        url: `${firebaseConfig.databaseURL}/friends.json`,
+        data: JSON.stringify(newFriend),
+      }).done((uniqueKey) =>
+    {
+      resolve(uniqueKey);
+    }).fail((err) =>
+    {
+      reject(err);
+    });
+  });
+};
+
 // Gets a list of all pending friend requests and assigns them to the current user if they have been sent one
 
 const getFriendRequests = () =>
@@ -182,7 +201,7 @@ const getFriendRequests = () =>
 
 // Update the friend object upon accept or decline
 
-const updateFriendsDb = (updatedFriend, friendId) =>
+const updateFriend = (updatedFriend, friendId) =>
 {
   updatedFriend.uid = firebase.auth().currentUser.uid;
   return new Promise ((resolve, reject) =>
@@ -221,7 +240,8 @@ module.exports =
   getAllFriends,
   addAFriend,
   getFriendRequests,
-  updateFriendsDb,
+  updateFriend,
   deleteAFriend,
   getUsers,
+  addANewFriend,
 };
