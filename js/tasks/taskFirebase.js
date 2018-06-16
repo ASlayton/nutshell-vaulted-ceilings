@@ -1,9 +1,12 @@
+const {getConfig,} = require('./../firebaseApi.js');
+
 const createTask = (newTask) => {
-  newTask.userUid = firebase.auth().currentUser.uid;
+  newTask.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
+    const config = getConfig();
     $.ajax({
       method: 'POST',
-      url: `https://nutshell-vaulted.firebaseio.com/tasks.json`,
+      url: `${config.databaseURL}/tasks.json`,
       data: JSON.stringify(newTask),
     })
       .done((uniqueKey) => {
@@ -15,29 +18,67 @@ const createTask = (newTask) => {
   });
 };
 
-// const getTasks = () => {
-//   return new Promise((resolve, reject) => {
-//     const allTasks = [];
-//     $.ajax({
-//       method: 'GET',
-//       url: `https://nutshell-vaulted.firebaseio.com/tasks.json?orderBy="userUid"&equalTo="${userUid}"`,
-//     })
-//       .done((allTasksObject) => {
-//         if (allTasksObject !== null) {
-//           Object.keys(allTasksObject). forEach((fbKey) => {
-//             allTasksObject[fbKey].id = fbKey;
-//             allTasks.push(allTasksObject[fbKey]);
-//           });
-//         }
-//         resolve(allTasks);
-//       })
-//       .fail((error) => {
-//         reject(error);
-//       });
-//   });
-// };
+const getTasks = () => {
+  return new Promise((resolve, reject) => {
+    const allTasks = [];
+    const config = getConfig();
+    const uid = firebase.auth().currentUser.uid;
+    $.ajax({
+      method: 'GET',
+      url: `${config.databaseURL}/tasks.json?orderBy="uid"&equalTo="${uid}"`,
+    })
+      .done((allTasksObject) => {
+        if (allTasksObject !== null) {
+          Object.keys(allTasksObject). forEach((fbKey) => {
+            allTasksObject[fbKey].id = fbKey;
+            allTasks.push(allTasksObject[fbKey]);
+          });
+        }
+        resolve(allTasks);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
+
+const deleteTasks = (taskId) => {
+  return new Promise((resolve, reject) => {
+    const config = getConfig();
+    $.ajax({
+      method: 'DELETE',
+      url: `${config.databaseURL}/tasks/${taskId}.json`,
+    })
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+const completedTask = (updatedTask, taskId) => {
+  updatedTask.uid = firebase.auth().currentUser.uid;
+  return new Promise((resolve, reject) => {
+    const config = getConfig();
+    $.ajax({
+      method: 'PUT',
+      url: `${config.databaseURL}/tasks/${taskId}.json`,
+      data: JSON.stringify(updatedTask),
+    })
+      .done((modifiedTask) => {
+        resolve(modifiedTask);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
 
 module.exports = {
   createTask,
-  // getTasks,
+  getTasks,
+  deleteTasks,
+  completedTask,
 };

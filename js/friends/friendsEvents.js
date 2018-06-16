@@ -9,6 +9,7 @@ $('#friendsBtn').click(() =>
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
   $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
+  $('#backBtn').removeClass('hide');
 });
 
 // Checks if the users are already on your friends list

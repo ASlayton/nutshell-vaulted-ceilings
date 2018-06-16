@@ -5,15 +5,19 @@ const clickTasks = () => {
   $(document).on('click', '#tasksBtn', taskTime);
   $(document).on('click', '#createTaskBtn', clickTaskButton);
   $(document).on('keypress', '#taskInput', pressEnter);
+  $(document).on('click', '#deleteTask', deleteTask);
+  isItDone();
 };
 
 const taskTime = () => {
   $('#tasks').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#backBtn').removeClass('hide');
+  getAllTasks();
   taskDom.taskString();
-  taskDom.theTasksDom();
-  // getAllTasks();
 };
+
+// Create New Task
 
 const pressEnter = (e) => {
   if (e.key === 'Enter' && !$('#task').hasClass('hide')) {
@@ -24,6 +28,9 @@ const pressEnter = (e) => {
     };
     taskFirebase.createTask(taskToAdd)
       .then(() => {
+        taskDom.newTask(taskToAdd);
+        $('#taskInput').val('');
+        taskTime();
       })
       .catch((error) => {
         console.error('error in creating task', error);
@@ -39,21 +46,60 @@ const clickTaskButton = () => {
   };
   taskFirebase.createTask(taskToAdd)
     .then(() => {
+      taskDom.newTask(taskToAdd);
+      $('#taskInput').val('');
+      taskTime();
     })
     .catch((error) => {
       console.error('error in creating task', error);
     });
 };
 
-// const getAllTasks = () => {
-//   taskFirebase.getTasks()
-//     .then((tasksArray) => {
-//       taskDom.theTasksDom(tasksArray);
-//     })
-//     .catch((error) => {
-//       console.error('error in get all movies', error);
-//     });
-// };
+// Load Tasks
+
+const getAllTasks = () => {
+  taskFirebase.getTasks()
+    .then((tasksArray) => {
+      taskDom.theTasksDom(tasksArray);
+    })
+    .catch((error) => {
+      console.error('error in getting tasks', error);
+    });
+};
+
+// Delete Tasks
+
+const deleteTask = (e) => {
+  const taskToDelete = $(e.target).closest('#taskCard').data('firebaseId');
+  const panelToDelete = $(e.target).closest('#taskCard');
+  taskFirebase.deleteTasks(taskToDelete)
+    .then(() => {
+      panelToDelete.remove();
+    })
+    .catch((error) => {
+      console.error('error in deleting task', error);
+    });
+};
+
+// Completing Task
+
+const isItDone = () => {
+  $(document).on('click', '.checkbox', (e) => {
+    const taskId = $(e.target).closest('#taskCard').data('firebaseId');
+    const taskToUpdate = $(e.target).closest('#taskCard');
+    const updatedTask = {
+      task: taskToUpdate.find('.theTask').text(),
+      isComplete: true,
+    };
+    taskFirebase.completedTask(updatedTask, taskId)
+      .then(() => {
+        taskToUpdate.addClass('done');
+      })
+      .catch((error) => {
+        console.error('error on updated tasks', error);
+      });
+  });
+};
 
 module.exports = {
   clickTasks,
