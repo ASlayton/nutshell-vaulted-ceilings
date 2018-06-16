@@ -8,6 +8,7 @@ const clickMessageBtn = () => {
 const showMessages = () => {
   $('#messages').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#backBtn').removeClass('hide');
 };
 
 const clickMessageSubmit = (() => {

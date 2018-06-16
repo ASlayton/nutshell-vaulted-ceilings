@@ -10,6 +10,7 @@ const clickTasks = () => {
 const taskTime = () => {
   $('#tasks').removeClass('hide');
   $('#welcome').addClass('hide');
+  $('#backBtn').removeClass('hide');
   taskDom.taskString();
   taskDom.theTasksDom();
   // getAllTasks();
