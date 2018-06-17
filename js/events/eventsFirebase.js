@@ -2,16 +2,28 @@ const { getConfig, } = require('../firebaseApi');
 const { apiKeys, } = require('../apiKeys');
 
 let firebaseConfig = {};
-// const uid = getUid();
+
+// const apiKeys = () => {
+//   return new Promise((resolve, reject) => {
+//     $.ajax('./db/apiKey.json')
+//       .done((data) => {
+//         resolve(data.apiKeys);
+//       })
+//       .fail((err) => {
+//         reject(err);
+//       });
+//   });
+// };
 
 const getAllEventsFromFb = () => {
   return new Promise((resolve, reject) => {
     apiKeys()
       .then((results) => {
         const allEventsArray = [];
+        const uid = firebase.auth().currentUser.uid;
         $.ajax({
           method: 'GET',
-          url: `${results.firebase.databaseURL}/events.json`,
+          url: `${results.firebase.databaseURL}/events.json?orderBy="uid"&equalTo="${uid}"`,
         })
           .done((allEventsObj) => {
             if (allEventsObj !== null) {
