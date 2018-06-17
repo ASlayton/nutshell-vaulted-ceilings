@@ -10,9 +10,9 @@ const clickTasks = () => {
 };
 
 const taskTime = () => {
-  $('#tasks').removeClass('hide');
+  $('#tasks').fadeIn(2200).removeClass('hide');
   $('#welcome').addClass('hide');
-  $('#backBtn').removeClass('hide');
+  $('#backBtn').fadeIn(5500).removeClass('hide');
   getAllTasks();
   taskDom.taskString();
 };
@@ -74,7 +74,7 @@ const deleteTask = (e) => {
   const panelToDelete = $(e.target).closest('#taskCard');
   taskFirebase.deleteTasks(taskToDelete)
     .then(() => {
-      panelToDelete.remove();
+      panelToDelete.slideUp(1000);
     })
     .catch((error) => {
       console.error('error in deleting task', error);
