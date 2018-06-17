@@ -1,9 +1,9 @@
-const {saveNewEvent, getAllEventsFromFb, deleteEvent,} = require('./eventsFirebase');
+const {saveNewEvent, getAllEventsFromFb, deleteEvent, updateUserEvent,} = require('./eventsFirebase');
 const {eventDomString,} = require('./eventsDom');
 
 const eventsFeatureEvents = () => {
   $('#eventsBtn').click(() => {
-    $('#events, #backBtn').fadeIn(500).removeClass('hide');
+    $('#events, #backBtn').fadeIn(1000).removeClass('hide');
     $('#welcome').addClass('hide');
   });
 
@@ -12,7 +12,7 @@ const eventsFeatureEvents = () => {
     $('#welcome').removeClass('hide');
   });
 
-  $('#saveEvent').click(() => {
+  $('#saveEventBtn').click(() => {
     const eTitle = $('#eventTitle').val();
     const eDate = $('#eventDate').val();
     const eLocation = $('#eventLocation').val();
@@ -27,6 +27,12 @@ const eventsFeatureEvents = () => {
     $('#eventTitle, #eventDate, #eventLocation').val('');
     retrieveAllEvents();
   });
+
+  $('#newEventBtn').click(() => {
+    $('#updateEventBtn').addClass('hide');
+    $('#saveEventBtn').removeClass('hide');
+  });
+
 };
 
 const retrieveAllEvents = () => {
@@ -52,8 +58,40 @@ const deleteAnEvent = () => {
   });
 };
 
+const editAnEvent = () => {
+  $(document).on('click', '.editUserEvent', (e) => {
+    const eventToEditId = $(e.target).closest('.event-card').data('firebaseId');
+    const eventToEditCard = $(e.target).closest('.event-card');
+    const currentTitle = eventToEditCard.find('.evt-title').text();
+    const currentDate = eventToEditCard.find('.evt-date').text();
+    const currentLoc = eventToEditCard.find('.evt-loc').text();
+    $('#updateEventBtn').removeClass('hide');
+    $('#saveEventBtn').addClass('hide');
+    $('#eventTitle').val(currentTitle);
+    $('#eventDate').val(currentDate);
+    $('#eventLocation').val(currentLoc);
+
+    $('#updateEventBtn').click(() => {
+      const newTitle = $('#eventTitle').val();
+      const newDate = $('#eventDate').val();
+      const newLocation = $('#eventLocation').val();
+      const userId = firebase.auth().currentUser.uid;
+      const updatedEventObj = {
+        title: newTitle,
+        date: newDate,
+        location: newLocation,
+        uid: userId,
+      };
+      updateUserEvent(updatedEventObj, eventToEditId);
+      $('#eventTitle, #eventDate, #eventLocation').val('');
+      retrieveAllEvents();
+    });
+  });
+};
+
 module.exports = {
   eventsFeatureEvents,
   retrieveAllEvents,
   deleteAnEvent,
+  editAnEvent,
 };

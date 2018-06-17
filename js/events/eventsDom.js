@@ -11,7 +11,7 @@ const eventDomString = (eventArray) => {
     strang +=     `</ul>`;
     strang +=   `<div class="btn-group" role="group">`;
     strang +=     `<button type="button" class="deleteEvent btn btn-primary btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>`;
-    strang +=     `<button type="button" class="editEvent btn btn-danger btn-sm"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Edit</button>`;
+    strang +=     `<button type="button" class="editUserEvent btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Edit</button>`;
     strang +=   `</div>`;
     strang +=  `</div>`;
   });
