@@ -9,9 +9,10 @@ const getAllEventsFromFb = () => {
     apiKeys()
       .then((results) => {
         const allEventsArray = [];
+        const uid = firebase.auth().currentUser.uid;
         $.ajax({
           method: 'GET',
-          url: `${results.firebase.databaseURL}/events.json`,
+          url: `${results.firebase.databaseURL}/events.json?orderBy="uid"&equalTo="${uid}"`,
         })
           .done((allEventsObj) => {
             if (allEventsObj !== null) {
@@ -25,11 +26,11 @@ const getAllEventsFromFb = () => {
           .fail((error) => {
             reject(error);
           });
+      })
+      .catch((error) => {
+        console.error(error);
       });
-  })
-    .catch((error) => {
-      console.error(error);
-    });
+  });
 };
 
 const saveNewEvent = (newEventObj) => {
