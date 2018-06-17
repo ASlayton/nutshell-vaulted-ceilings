@@ -1,4 +1,4 @@
-const {getUsers, saveNewUser,} = require('../firebaseApi');
+const {getUsers, saveNewUser,} = require('./usersFirebase');
 
 const authorizationEvents = () => {
   $('#go-register').click(() => {
