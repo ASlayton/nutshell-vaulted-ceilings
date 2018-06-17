@@ -1,4 +1,4 @@
-const {createMessage, deleteMessage, getAllMessages,} = require('./messageFirebase');
+const messageFirebase = require('./messageFirebase');
 const {printAllMessages, printNewMessage,} = require('./messageDom');
 
 $('#messagesBtn').click(() => {
@@ -16,7 +16,7 @@ const eventBinder = () => {
 
 // Print all messages
 const getAllMessagesEvent = () => {
-  getAllMessages()
+  messageFirebase.getAllMessages()
     .then((messagesArray) => {
       printAllMessages(messagesArray);
     })
@@ -38,10 +38,9 @@ const clickMessageSubmit = () => {
       timestamp: timestamp,
       isEdited: false,
     };
-    createMessage(messageToAdd)
+    messageFirebase.createMessage(messageToAdd)
       .then(() => {
-        const message = $('#message-input').val();
-        printNewMessage(message);
+        printNewMessage(messageToAdd);
         $('#message-input').val('');
       })
       .catch((error) => {
@@ -61,7 +60,7 @@ const pressEnterMessage = (e) => {
       timestamp: timestamp,
       isEdited: false,
     };
-    createMessage(messageToAdd)
+    messageFirebase.createMessage(messageToAdd)
       .then(() => {
         printNewMessage(messageToAdd);
         $('#message-input').val('');
@@ -76,7 +75,7 @@ const pressEnterMessage = (e) => {
 const deleteMessageEvent = (e) => {
   const messageToDeleteId = $(e.target).closest('.speech-bubble').data('firebaseId');
   const messageToDeleteCard = $(e.target).closest('.speech-bubble');
-  deleteMessage(messageToDeleteId)
+  messageFirebase.deleteMessage(messageToDeleteId)
     .then(() => {
       messageToDeleteCard.remove();
     })

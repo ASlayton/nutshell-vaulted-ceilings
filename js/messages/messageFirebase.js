@@ -1,4 +1,4 @@
-const {getConfig,} = require('./../firebaseApi');
+const {getConfig,} = require('./../firebaseApi.js');
 
 // [C]REATE
 const createMessage = (newMessage) => {
@@ -19,7 +19,7 @@ const createMessage = (newMessage) => {
   });
 };
 
-// [R]EAD
+// // [R]EAD
 const getAllMessages = () => {
   return new Promise((resolve, reject) => {
     const allMessagesArray = [];
