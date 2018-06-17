@@ -76,9 +76,8 @@ body {
 /* End Tasks */
 
 /* Events */
-.event-form {
-  border-radius: 5px;
-  border: 1px solid darkgray;
+#events-header {
+  color: #5bc0de;
 }
 
 .event-card {
