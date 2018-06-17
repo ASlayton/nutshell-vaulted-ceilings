@@ -1,5 +1,3 @@
-const events = require('./messageEvents');
-// const messages = require('./messages');
+const messageEvents = require('./messageEvents');
 
-// messages.showResults();
-events.initializer();
+messageEvents.eventBinder();
