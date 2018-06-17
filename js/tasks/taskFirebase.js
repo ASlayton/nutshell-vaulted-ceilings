@@ -29,7 +29,7 @@ const getTasks = () => {
     })
       .done((allTasksObject) => {
         if (allTasksObject !== null) {
-          Object.keys(allTasksObject). forEach((fbKey) => {
+          Object.keys(allTasksObject).forEach((fbKey) => {
             allTasksObject[fbKey].id = fbKey;
             allTasks.push(allTasksObject[fbKey]);
           });
