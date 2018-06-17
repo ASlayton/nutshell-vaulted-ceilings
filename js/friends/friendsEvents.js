@@ -10,6 +10,7 @@ $('#friendsBtn').click(() =>
   $('#welcome').addClass('hide');
   $('.navbar-header').html(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
+  showFriends();
 });
 
 // Checks if the users are already on your friends list
@@ -277,7 +278,7 @@ const showFriends = () =>
 
 const showMyFriends = () =>
 {
-  $(document).on('click', '#showFriendsBtn', (e) =>
+  $('#showFriendsBtn').click((e) =>
   {
     showFriends();
   });
