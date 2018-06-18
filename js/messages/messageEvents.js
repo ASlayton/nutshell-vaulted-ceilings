@@ -5,7 +5,7 @@ $('#messagesBtn').click(() => {
   $('#messages').removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').removeClass('hide');
-  getAllMessagesEvent();
+  retrieveAllMessages();
 });
 
 const eventBinder = () => {
@@ -13,18 +13,6 @@ const eventBinder = () => {
   $(document).on('keypress', '#message-input', pressEnterMessage);
   $(document).on('click', '.deleteMessageBtn', deleteMessageEvent);
   $(document).on('click', '.editMessageBtn', editMessageEvent);
-  editMessageEvent();
-};
-
-// Print all messages
-const getAllMessagesEvent = () => {
-  messageFirebase.getAllMessages()
-    .then((messagesArray) => {
-      printAllMessages(messagesArray);
-    })
-    .catch((error) => {
-      console.error('error in get messages event', error);
-    });
 };
 
 // Enter message click
@@ -35,15 +23,18 @@ const clickMessageSubmit = () => {
     const message = $('#message-input').val();
     const date = new Date();
     const timestamp = date.getTime();
+    const userId = firebase.auth().currentUser.uid;
     const messageToAdd = {
       message: message,
       timestamp: timestamp,
       isEdited: false,
+      uid: userId,
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
         printNewMessage(messageToAdd);
         $('#message-input').val('');
+        retrieveAllMessages();
       })
       .catch((error) => {
         console.error('error in creating message', error);
@@ -57,15 +48,18 @@ const pressEnterMessage = (e) => {
     const message = $('#message-input').val();
     const date = new Date();
     const timestamp = date.getTime();
+    const userId = firebase.auth().currentUser.uid;
     const messageToAdd = {
       message: message,
       timestamp: timestamp,
       isEdited: false,
+      uid: userId,
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
         printNewMessage(messageToAdd);
         $('#message-input').val('');
+        retrieveAllMessages();
       })
       .catch((error) => {
         console.error('error in creating message', error);
@@ -73,13 +67,24 @@ const pressEnterMessage = (e) => {
   };
 };
 
+const retrieveAllMessages = () => {
+  messageFirebase.getAllMessages()
+    .then((results) => {
+      printAllMessages(results);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 // Delete message
 const deleteMessageEvent = (e) => {
-  const messageToDeleteId = $(e.target).closest('.speech-bubble').data('firebaseId');
-  const messageToDeleteCard = $(e.target).closest('.speech-bubble');
+  const messageToDeleteId = $(e.target).closest('.message-card').data('firebaseId');
+  const messageToDeleteCard = $(e.target).closest('.message-card');
   messageFirebase.deleteMessage(messageToDeleteId)
     .then(() => {
       messageToDeleteCard.remove();
+      retrieveAllMessages();
     })
     .catch((error) => {
       console.error('error from delete message', error);
@@ -88,13 +93,26 @@ const deleteMessageEvent = (e) => {
 
 // Edit message
 const editMessageEvent = (e) => {
-  const selectedMessage = $(e.target).closest('.message-card');
-  selectedMessage.attr('id', 'editMode');
-  const messageToEdit = selectedMessage.find('.message-text').text();
-  const messageID = selectedMessage.data('firebaseId');
-  $('#message-to-update').val(messageToEdit);
-  $('#message-to-update').data('firebaseId', messageID);
-  messageFirebase.editMessage();
+  const messageToEditId = $(e.target).closest('.message-card').data('firebaseId');
+  const messageToEditCard = $(e.target).closest('.message-card');
+  const messageToEditText = messageToEditCard.find('.message-text').text();
+  // const timeToEdit = messageToEditCard.find('.message-time').text();   // **NEED TO ADD TIME OF MESSAGE TO DOM**
+  $('#message-edit-mode').val(messageToEditText);
+
+  $('#saveMessageBtn').click(() => {
+    const newMessage = $('#message-edit-mode').val();
+    const newTime = $('.message-time').val();  // **NEED TO ADD TIME OF MESSAGE TO DOM**
+    const userId = firebase.auth().currentUser.uid;
+    const updatedMessageObj = {
+      message: newMessage,
+      timestamp: newTime,
+      isEdited: true,
+      uid: userId,
+    };
+    messageFirebase.editMessage(updatedMessageObj, messageToEditId);
+    $('#message-edit-mode').val('');
+    retrieveAllMessages();
+  });
 };
 
 // Save Edited Message

@@ -11,11 +11,12 @@ const printAllMessages = (messageArray) => {
   messageArray.forEach((message) => {
     messagesString += `<div class="row">`;
     messagesString +=   `<div class="speech-bubble message-card col-md-12" data-firebase-id="${message.id}">`;
-    messagesString +=     `<p><span class="message-text">${message.message}</span>`;
-    messagesString +=     `<a class="btn btn-danger deleteMessageBtn pull-right">X</a>`;
-    messagesString += `    <a class="btn btn-success saveMessageBtn pull-right hide">Save</a>`;
-    messagesString +=     `<a class="btn btn-warning editMessageBtn pull-right">Edit</a></p>`;
-    messagesString +=   `</div>`;
+    messagesString +=     `<p class="message-text">${message.message}</p>`;
+    messagesString += `      <div class="btn-group" role="group">`;
+    messagesString += `        <button type="button" class="deleteMessageBtn btn btn-primary btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>`;
+    messagesString += `        <button type="button" class="editMessageBtn btn btn-danger btn-sm" data-toggle="modal" data-target="#message-modal"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Edit</button>`;
+    messagesString += `      </div>`;
+    messagesString += `  </div>`;
     messagesString += `</div>`;
   });
   printAllMessagesToDom(messagesString);
@@ -25,10 +26,11 @@ const printNewMessage = (newMessage) => {
   let messageString = '';
   messageString += `<div class="row">`;
   messageString += `  <div class="speech-bubble message-card col-md-12" data-firebase-id="${newMessage.id}"`;
-  messageString += `    <p><span class="message-text">${newMessage.message}</span>`;
-  messageString += `    <a class="btn btn-danger deleteMessageBtn pull-right">X</a>`;
-  messageString += `    <a class="btn btn-success saveMessageBtn pull-right hide">Save</a>`;
-  messageString += `    <a class="btn btn-warning editMessageBtn pull-right">Edit</a></p>`;
+  messageString += `    <p class="message-text">${newMessage.message}</p>`;
+  messageString += `    <div class="btn-group" role="group">`;
+  messageString += `      <button type="button" class="deleteMessageBtn btn btn-primary btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>`;
+  messageString += `      <button type="button" class="editMessageBtn btn btn-danger btn-sm" data-toggle="modal" data-target="message-modal"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Edit</button>`;
+  messageString += `    </div>`;
   messageString += `  </div>`;
   messageString += `</div>`;
   printMessageToDom(messageString);

@@ -1,17 +1,19 @@
-const {getConfig,} = require('./../firebaseApi.js');
+const {getConfig,} = require('./../firebaseApi');
+const {apiKeys,} = require('../apiKeys');
+
+let firebaseConfig = {};
 
 // [C]REATE
-const createMessage = (newMessage) => {
-  newMessage.uid = firebase.auth().currentUser.uid;
+const createMessage = (newMessageObj) => {
   return new Promise((resolve, reject) => {
-    const config = getConfig();
+    firebaseConfig = getConfig();
     $.ajax({
       method: 'POST',
-      url: `${config.databaseURL}/messages.json`,
-      data: JSON.stringify(newMessage),
+      url: `${firebaseConfig.databaseURL}/messages.json`,
+      data: JSON.stringify(newMessageObj),
     })
-      .done((uniqueKey) => {
-        resolve(uniqueKey);
+      .done((newMessage) => {
+        resolve(newMessage);
       })
       .fail((error) => {
         reject(error);
@@ -19,39 +21,41 @@ const createMessage = (newMessage) => {
   });
 };
 
-// // [R]EAD
 const getAllMessages = () => {
   return new Promise((resolve, reject) => {
-    const allMessagesArray = [];
-    const config = getConfig();
-    const uid = firebase.auth().currentUser.uid;
-    $.ajax({
-      method: 'GET',
-      url: `${config.databaseURL}/messages.json?orderBy="uid"&equalTo="${uid}"`,
-    })
-      .done((allMessagesObj) => {
-        if (allMessagesObj !== null) {
-          Object.keys(allMessagesObj).forEach((fbKey) => {
-            allMessagesObj[fbKey].id = fbKey;
-            allMessagesArray.push(allMessagesObj[fbKey]);
+    apiKeys()
+      .then((results) => {
+        const allMessagesArray = [];
+        $.ajax({
+          method: 'GET',
+          url: `${results.firebase.databaseURL}/messages.json`,
+        })
+          .done((allMessagessObj) => {
+            if (allMessagessObj !== null) {
+              Object.keys(allMessagessObj).forEach((fbKey) => {
+                allMessagessObj[fbKey].id = fbKey;
+                allMessagesArray.push(allMessagessObj[fbKey]);
+              });
+            }
+            resolve(allMessagesArray);
+          })
+          .fail((error) => {
+            reject(error);
           });
-        }
-        resolve(allMessagesArray);
-      })
-      .fail((error) => {
-        reject(error);
       });
-  });
+  })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // [U]PDATE
 const editMessage = (editedMessage, messageId) => {
-  editedMessage.uid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
-    const config = getConfig();
+    firebaseConfig = getConfig();
     $.ajax({
       method: 'PUT',
-      url: `${config.databaseURL}/messages/${messageId}.json`,
+      url: `${firebaseConfig.databaseURL}/messages/${messageId}.json`,
       data: JSON.stringify(editedMessage),
     })
       .done((modifiedMessage) => {
@@ -66,10 +70,10 @@ const editMessage = (editedMessage, messageId) => {
 // [D]ELETE
 const deleteMessage = (messageId) => {
   return new Promise((resolve, reject) => {
-    const config = getConfig();
+    firebaseConfig = getConfig();
     $.ajax({
       method: 'DELETE',
-      url: `${config.databaseURL}/messages/${messageId}.json`,
+      url: `${firebaseConfig.databaseURL}/messages/${messageId}.json`,
     })
       .done(() => {
         resolve();
