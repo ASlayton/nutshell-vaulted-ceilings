@@ -12,6 +12,8 @@ const eventBinder = () => {
   $(document).on('click', '#message-submit', clickMessageSubmit);
   $(document).on('keypress', '#message-input', pressEnterMessage);
   $(document).on('click', '.deleteMessageBtn', deleteMessageEvent);
+  $(document).on('click', '.editMessageBtn', editMessageEvent);
+  editMessageEvent();
 };
 
 // Print all messages
@@ -83,6 +85,19 @@ const deleteMessageEvent = (e) => {
       console.error('error from delete message', error);
     });
 };
+
+// Edit message
+const editMessageEvent = (e) => {
+  const selectedMessage = $(e.target).closest('.message-card');
+  selectedMessage.attr('id', 'editMode');
+  const messageToEdit = selectedMessage.find('.message-text').text();
+  const messageID = selectedMessage.data('firebaseId');
+  $('#message-to-update').val(messageToEdit);
+  $('#message-to-update').data('firebaseId', messageID);
+  messageFirebase.editMessage();
+};
+
+// Save Edited Message
 
 module.exports = {
   eventBinder,
