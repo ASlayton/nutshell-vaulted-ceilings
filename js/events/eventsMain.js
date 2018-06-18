@@ -1,8 +1,8 @@
-const {eventsFeatureEvents, retrieveAllEvents, deleteAnEvent, editAnEvent,} = require('./userEventEvents');
+const {eventsFeatureEvents, retrieveAllMyEvents, deleteAnEvent, editAnEvent,} = require('./userEventEvents');
 // const {getAllEventsFromFb,} = require('./eventsFirebase');
 
 const eventInitializer = () => {
-  retrieveAllEvents();
+  retrieveAllMyEvents();
   eventsFeatureEvents();
   deleteAnEvent();
   editAnEvent();

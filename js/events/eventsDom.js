@@ -1,4 +1,4 @@
-const eventDomString = (eventArray) => {
+const eventDomString = (eventArray, whereAt) => {
   let strang = '';
   strang += `<div class="container-fluid">`;
   strang +=   `<div class="row text-center">`;
@@ -17,7 +17,7 @@ const eventDomString = (eventArray) => {
   });
   strang +=   `</div>`;
   strang += `</div>`;
-  printToDom(strang, 'eventCards');
+  printToDom(strang, whereAt);
 };
 
 const printToDom = (string, whereToPrint) => {

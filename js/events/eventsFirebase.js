@@ -3,19 +3,7 @@ const { apiKeys, } = require('../apiKeys');
 
 let firebaseConfig = {};
 
-// const apiKeys = () => {
-//   return new Promise((resolve, reject) => {
-//     $.ajax('./db/apiKey.json')
-//       .done((data) => {
-//         resolve(data.apiKeys);
-//       })
-//       .fail((err) => {
-//         reject(err);
-//       });
-//   });
-// };
-
-const getAllEventsFromFb = () => {
+const getMyEventsFromFb = () => {
   return new Promise((resolve, reject) => {
     apiKeys()
       .then((results) => {
@@ -96,7 +84,7 @@ const updateUserEvent = (updatedEvt, id) => {
 
 module.exports = {
   saveNewEvent,
-  getAllEventsFromFb,
+  getMyEventsFromFb,
   deleteEvent,
   updateUserEvent,
 };
