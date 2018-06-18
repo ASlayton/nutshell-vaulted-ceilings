@@ -1,18 +1,19 @@
 const messageFirebase = require('./messageFirebase');
-const {printAllMessages, printNewMessage,} = require('./messageDom');
+const {printAllMessages,} = require('./messageDom');
 
-$('#messagesBtn').click(() => {
+const messageContainerEvent = () => {
   $('#messages').removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').removeClass('hide');
   retrieveAllMessages();
-});
+};
 
 const eventBinder = () => {
   $(document).on('click', '#message-submit', clickMessageSubmit);
   $(document).on('keypress', '#message-input', pressEnterMessage);
   $(document).on('click', '.deleteMessageBtn', deleteMessageEvent);
   $(document).on('click', '.editMessageBtn', editMessageEvent);
+  $(document).on('click', '#messagesBtn', messageContainerEvent);
 };
 
 // Enter message click
@@ -32,7 +33,6 @@ const clickMessageSubmit = () => {
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
-        printNewMessage(messageToAdd);
         $('#message-input').val('');
         retrieveAllMessages();
       })
@@ -57,7 +57,6 @@ const pressEnterMessage = (e) => {
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
-        printNewMessage(messageToAdd);
         $('#message-input').val('');
         retrieveAllMessages();
       })
@@ -109,13 +108,12 @@ const editMessageEvent = (e) => {
       isEdited: true,
       uid: userId,
     };
-    messageFirebase.editMessage(updatedMessageObj, messageToEditId);
-    $('#message-edit-mode').val('');
-    retrieveAllMessages();
+    messageFirebase.editMessage(updatedMessageObj, messageToEditId)
+      .then(() => {
+        retrieveAllMessages();
+      });
   });
 };
-
-// Save Edited Message
 
 module.exports = {
   eventBinder,
