@@ -1,5 +1,6 @@
 const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
-const {friendsList, friendRequestCard, modFriendsList,} = require('./friendsDom');;
+const {modFriendsList, friendsList, friendRequestCard,} = require('./friendsDom');;
+const {getOurEvents,} = require('./getOurEvents');
 let friendUid = '';
 const friendArr = [];
 // const myFriend = [];
@@ -8,8 +9,11 @@ $('#friendsBtn').click(() =>
 {
   $('#friends').fadeIn(1000).removeClass('hide');
   $('#welcome').addClass('hide');
-  $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
+  showFriends();
+  $('#myFriendsList').html('');
+  $('#friendsList').html('');
+  $('#pendingFriendRequests').html('');
 });
 
 $(document).on('click', '#logout', () =>
@@ -88,6 +92,7 @@ const setMyUsername = () =>
       if (element.uid === firebase.auth().currentUser.uid)
       {
         firebase.auth().currentUser.username = element.username;
+        $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
       }
     });
   }).catch();
@@ -98,7 +103,7 @@ const addAFriendEvent = () =>
   $(document).on('click', '.addThisFriend', (e) =>
   {
     const friendToAddCard = $(e.target).closest('.userCard');
-    const friendUid = friendToAddCard.find('h3').data('frienduid');
+    const friendUid = friendToAddCard.find('li').data('frienduid');
     const friendToAdd =
     {
       'username': firebase.auth().currentUser.username,
@@ -113,6 +118,7 @@ const addAFriendEvent = () =>
         console.error('Error in adding a friend', err);
       });
     getNonFriends();
+    showFriends();
   });
 };
 
@@ -124,7 +130,14 @@ const removeFriend = () =>
   {
     const friendId = $(e.target).closest('.friendCard').data('firebaseid');
     deleteAFriend(friendId)
-      .then().catch((err) => { console.error(err); });
+      .then(() =>
+      {
+        $('#friendsList').html('');
+        getNonFriends();
+        $('#myFriendsList').html('');
+        friendArr.length = 0;
+        showFriends();
+      }).catch((err) => { console.error(err); });
   });
 };
 
@@ -192,7 +205,7 @@ const acceptFR = () =>
     const updatedFriend =
     {
       'username': friendToUpdateCard.find('h3').text(),
-      'friendUsername': `${firebase.auth().currentUser.uid}`,
+      'friendUsername': `${firebase.auth().currentUser.username}`,
       'friendUid': friendUid,
       'isAccepted': true,
       'isPending': false,
@@ -255,29 +268,13 @@ const findUserName = (userObj) =>
         if (user.uid === userObj.friendUid)
         {
           userObj.username = user.username;
+          friendArr.length = 0;
           friendArr.push(userObj);
         }
       });
     })
     .catch((err) => { console.error(err); });
 };
-
-// const findUid = (userObj) =>
-// {
-//   getAllUsers()
-//     .then((users) =>
-//     {
-//       users.forEach(user =>
-//       {
-//         if (user.username === userObj.friendUid)
-//         {
-//           userObj.username = user.username;
-//           friendArr.push(userObj);
-//         }
-//       });
-//     })
-//     .catch((err) => { console.error(err); });
-// };
 
 // Show A list of your friends
 
@@ -292,7 +289,14 @@ const showFriends = () =>
           result.forEach(friend => {
             findUserName(friend);
           });
-          friendsList(result);
+          friendArr.forEach(element =>
+          {
+            if (element.friendUid !== firebase.auth().currentUser.uid)
+            {
+              friendsList(friendArr);
+            }
+          });
+
           friendRequestCard(friendRequests);
         });
     })
@@ -309,6 +313,13 @@ const showMyFriends = () =>
     showFriends();
   });
 };
+
+// Show Friends Events
+
+$('#eventsBtn').click(() =>
+{
+  getOurEvents();
+});
 
 const initEvents = () =>
 {

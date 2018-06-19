@@ -1,35 +1,34 @@
-const domStringBuild = (allUsersArr) =>
+const modFriendsList = (friendsArr) =>
 {
   let domString = '';
-  allUsersArr.forEach(user =>
+  friendsArr.forEach(friend =>
   {
-    domString += `<div class="col-md-100 userCard">`;
-    domString += `<div class="panel panel-default">`;
-    domString += `<div class="panel-body">`;
-    domString += `<h3 data-friendUid="${user.uid}">${user.username}</h3>`;
-    domString += `<button class="btn btn-danger addThisFriend">Add</button>`;
-    domString += `</div>`;
-    domString += `</div>`;
+    domString += `<div class="userCard">`;
+    domString += `<li class="list-group-item" data-friendUid="${friend.uid}">`;
+    domString += `${friend.username}`;
+    domString += ` <button class="btn btn-success addThisFriend">Add</button>`;
+    domString += `</li>`;
     domString += `</div>`;
   });
-  $('#newFriendsBay').html(domString);
+  $('#friendsList').html(domString);
 };
 
 const friendsList = (friendsArr) =>
 {
   let domString = '';
-  friendsArr.forEach(user =>
+  friendsArr.forEach(bud =>
   {
     domString += `<div class="col-md-100 ">`;
     domString += `<div class="panel panel-default">`;
-    domString += `<div class="panel-body friendCard" data-firebaseId="${user.id}">`;
-    domString += `<h3 data-friendUid="${user.uid}">${user.username}`;
-    if (user.isPending === true)
+    domString += `<div class="panel-body friendCard" data-firebaseId="${bud.id}">`;
+    bud.username = bud.username;
+    domString += `<h3 data-friendUid="${bud.uid}">${bud.username}`;
+    if (bud.isPending === true)
     {
       domString += `<span class="label label-primary">Pending</span>`;
     }
     domString += `</h3>`;
-    if (user.isPending === false && user.isAccepted)
+    if (bud.isPending === false && bud.isAccepted)
     {
       domString += `<button class="btn-danger rmvFriend">Remove Friend</button>`;
     }
@@ -38,19 +37,6 @@ const friendsList = (friendsArr) =>
     domString += `</div>`;
   });
   $('#myFriendsList').html(domString);
-};
-
-const modFriendsList = (friendsArr) =>
-{
-  let domString = '';
-  friendsArr.forEach(friend =>
-  {
-    domString += `<li class="list-group-item">`;
-    domString += `${friend.username}`;
-    domString += ` <button class="btn btn-success addThisFriend">Add</button>`;
-    domString += `</li>`;
-  });
-  $('#friendsList').html(domString);
 };
 
 const friendRequestCard = (fRArr) =>
@@ -78,7 +64,6 @@ const friendRequestCard = (fRArr) =>
 
 module.exports =
 {
-  domStringBuild,
   friendsList,
   friendRequestCard,
   modFriendsList,
