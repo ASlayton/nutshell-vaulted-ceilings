@@ -102,7 +102,7 @@
       </div>
     </div>
 
-    <div id="backBtn" class="hide"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to Dashboard</div>
+    <button id="backBtn" class="hide btn btn-default"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to Dashboard</button>
 
     <!-- Welcome Screen with Buttons to All Components -->
     <div id="welcome" class="hide">
@@ -183,14 +183,15 @@
       </div>
       <div class="row">
         <div class="form-group col-md-6 col-md-offset-3">
-          <div class="input-group">
+          <div class="input-group input-sm">
             <input type="text" id="message-input" class="form-control input-lg" placeholder="Enter a message">
-            <span class="input-group-addon"><button class="btn" id="message-submit"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button></span>
+            <div class="input-group-addon">
+              <button class="btn btn-success" id="message-submit">Send</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <!-- MESSAGEBOARD MODAL -->
     <div class="modal fade" id="message-modal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
       <div class="modal-dialog" role="document">
