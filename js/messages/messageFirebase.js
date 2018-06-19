@@ -49,6 +49,34 @@ const getAllMessages = () => {
     });
 };
 
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    apiKeys()
+      .then((results) => {
+        const allUsersArray = [];
+        $.ajax({
+          method: 'GET',
+          url: `${results.firebase.databaseURL}/users.json`,
+        })
+          .done((allUsersObj) => {
+            if (allUsersObj !== null) {
+              Object.keys(allUsersObj).forEach((fbKey) => {
+                allUsersObj[fbKey].id = fbKey;
+                allUsersArray.push(allUsersObj[fbKey]);
+              });
+            }
+            resolve(allUsersArray);
+          })
+          .fail((error) => {
+            reject(error);
+          });
+      });
+  })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 // [U]PDATE
 const editMessage = (editedMessage, messageId) => {
   return new Promise((resolve, reject) => {
@@ -87,6 +115,7 @@ const deleteMessage = (messageId) => {
 module.exports = {
   createMessage,
   getAllMessages,
+  getAllUsers,
   editMessage,
   deleteMessage,
 };
