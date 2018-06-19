@@ -1,38 +1,119 @@
-const dom = require('./messageDom');
-// const messageFirebase = require('./messageFirebase');
+const messageFirebase = require('./messageFirebase');
+const {printAllMessages,} = require('./messageDom');
 
-const clickMessageBtn = () => {
-  $(document).on('click', '#messagesBtn', showMessages);
-};
-
-const showMessages = () => {
+const messageContainerEvent = () => {
   $('#messages').removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').removeClass('hide');
+  retrieveAllMessages();
 };
 
-const clickMessageSubmit = (() => {
-  $('#message-submit').click((e) => {
+const eventBinder = () => {
+  $(document).on('click', '#message-submit', clickMessageSubmit);
+  $(document).on('keypress', '#message-input', pressEnterMessage);
+  $(document).on('click', '.deleteMessageBtn', deleteMessageEvent);
+  $(document).on('click', '.editMessageBtn', editMessageEvent);
+  $(document).on('click', '#messagesBtn', messageContainerEvent);
+  $(document).on('click', '#saveMessageBtn', messageEditModalEvent);
+};
+
+// Enter message click
+const clickMessageSubmit = () => {
+  if ($('#message-input').val() === '') {
+    $('#message-submit:disabled');
+  } else {
     const message = $('#message-input').val();
-    dom.addMessage(message);
-  });
-});
-
-const pressEnterMessage = () => {
-  $(document).on('keypress', (e) => {
-    if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
-      const inputMessage = $('#message-input').val();
-      dom.addMessage(inputMessage);
-    }
-  });
+    const timestamp = new Date();
+    const userId = firebase.auth().currentUser.uid;
+    const messageToAdd = {
+      message: message,
+      timestamp: timestamp,
+      isEdited: false,
+      uid: userId,
+    };
+    messageFirebase.createMessage(messageToAdd)
+      .then(() => {
+        $('#message-input').val('');
+        retrieveAllMessages();
+      })
+      .catch((error) => {
+        console.error('error in creating message', error);
+      });
+  };
 };
 
-const initializer = () => {
-  clickMessageSubmit();
-  pressEnterMessage();
-  clickMessageBtn();
+// Enter message keypress
+const pressEnterMessage = (e) => {
+  if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
+    const message = $('#message-input').val();
+    const timestamp = new Date();
+    const userId = firebase.auth().currentUser.uid;
+    const messageToAdd = {
+      message: message,
+      timestamp: timestamp,
+      isEdited: false,
+      uid: userId,
+    };
+    messageFirebase.createMessage(messageToAdd)
+      .then(() => {
+        $('#message-input').val('');
+        retrieveAllMessages();
+      })
+      .catch((error) => {
+        console.error('error in creating message', error);
+      });
+  };
+};
+
+const retrieveAllMessages = () => {
+  messageFirebase.getAllMessages()
+    .then((results) => {
+      printAllMessages(results);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+// Delete message
+const deleteMessageEvent = (e) => {
+  const messageToDeleteId = $(e.target).closest('.message-card').data('firebaseId');
+  const messageToDeleteCard = $(e.target).closest('.message-card');
+  messageFirebase.deleteMessage(messageToDeleteId)
+    .then(() => {
+      messageToDeleteCard.remove();
+      retrieveAllMessages();
+    })
+    .catch((error) => {
+      console.error('error from delete message', error);
+    });
+};
+
+// Edit message
+const editMessageEvent = (e) => {
+  const messageToEditId = $(e.target).closest('.message-card').data('firebaseId');
+  const messageToEditCard = $(e.target).closest('.message-card');
+  const messageToEditText = messageToEditCard.find('.message-text').text();
+  $('#message-edit-mode').val(messageToEditText);
+  $('#saveMessageBtn').data('editId', messageToEditId);
+};
+
+const messageEditModalEvent = () => {
+  const messageEditId = $('#saveMessageBtn').data('editId');
+  const newMessage = $('#message-edit-mode').val();
+  const userId = firebase.auth().currentUser.uid;
+  const updatedMessageObj = {
+    message: newMessage,
+    timestamp: new Date(),
+    isEdited: true,
+    uid: userId,
+  };
+  messageFirebase.editMessage(updatedMessageObj, messageEditId)
+    .then(() => {
+      retrieveAllMessages();
+    });
 };
 
 module.exports = {
-  initializer,
+  eventBinder,
 };

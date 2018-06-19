@@ -10,9 +10,10 @@ const clickTasks = () => {
 };
 
 const taskTime = () => {
-  $('#tasks').removeClass('hide');
+  $('#tasks').fadeIn(1000).removeClass('hide');
   $('#welcome').addClass('hide');
-  $('#backBtn').removeClass('hide');
+  $('#backBtn').fadeIn(5500).removeClass('hide');
+  $('#taskInput').val('');
   getAllTasks();
   taskDom.taskString();
 };
@@ -28,8 +29,6 @@ const pressEnter = (e) => {
     };
     taskFirebase.createTask(taskToAdd)
       .then(() => {
-        taskDom.newTask(taskToAdd);
-        $('#taskInput').val('');
         taskTime();
       })
       .catch((error) => {
@@ -46,8 +45,6 @@ const clickTaskButton = () => {
   };
   taskFirebase.createTask(taskToAdd)
     .then(() => {
-      taskDom.newTask(taskToAdd);
-      $('#taskInput').val('');
       taskTime();
     })
     .catch((error) => {
@@ -74,7 +71,7 @@ const deleteTask = (e) => {
   const panelToDelete = $(e.target).closest('#taskCard');
   taskFirebase.deleteTasks(taskToDelete)
     .then(() => {
-      panelToDelete.remove();
+      panelToDelete.slideUp(1000);
     })
     .catch((error) => {
       console.error('error in deleting task', error);

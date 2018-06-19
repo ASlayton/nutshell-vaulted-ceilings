@@ -49,13 +49,23 @@ body {
 /* Tasks */
 
 .taskPanel {
-  margin-top: 2%;
-  margin-left: 4%;
-  margin-right: 4%;
+  margin-top: 1%;
+  margin-left: 15%;
+  margin-right: 15%;
   padding: 0 2%;
+  background-color: rgba(243, 156, 17, .75);
+  color: white;
 }
 
-.done p{
+.colorMeOrange {
+  color: rgba(243, 156, 17);
+}
+
+.done {
+  background-color: rgb(170, 209, 111, .7);
+}
+
+.done h4{
   text-decoration-line: line-through;
   color: red;
 }
@@ -75,6 +85,25 @@ body {
 }
 /* End Tasks */
 
+/* Events */
+#events-header {
+  color: #5bc0de;
+}
+
+.subheader {
+  font-style: italic;
+}
+
+.event-card {
+  background-color: #5bc0de;
+  margin: 2% 4.1%;
+  border-radius: 5px;
+  min-height: 250px;
+}
+
+.btn-group {
+  margin-bottom: 10px;
+}
 /* Friends */
 
 .friendCard {
