@@ -25,11 +25,14 @@ const clickMessageSubmit = () => {
     const message = $('#message-input').val();
     const timestamp = new Date();
     const userId = firebase.auth().currentUser.uid;
+    const userName = firebase.auth().currentUser.username;
+    console.log(userName);
     const messageToAdd = {
       message: message,
       timestamp: timestamp,
       isEdited: false,
       uid: userId,
+      userName: userName,
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
@@ -48,11 +51,13 @@ const pressEnterMessage = (e) => {
     const message = $('#message-input').val();
     const timestamp = new Date();
     const userId = firebase.auth().currentUser.uid;
+    const userName = firebase.auth().currentUser.username;
     const messageToAdd = {
       message: message,
       timestamp: timestamp,
       isEdited: false,
       uid: userId,
+      userName: userName,
     };
     messageFirebase.createMessage(messageToAdd)
       .then(() => {
