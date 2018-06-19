@@ -2,7 +2,7 @@ const messageFirebase = require('./messageFirebase');
 const {printAllMessages,} = require('./messageDom');
 
 const messageContainerEvent = () => {
-  $('#messages').removeClass('hide');
+  $('#messages').fadeIn(1000).removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').removeClass('hide');
   retrieveAllMessages();
