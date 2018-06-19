@@ -9,7 +9,6 @@ $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
-  $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
   showFriends();
   $('#myFriendsList').html('');
@@ -93,6 +92,7 @@ const setMyUsername = () =>
       if (element.uid === firebase.auth().currentUser.uid)
       {
         firebase.auth().currentUser.username = element.username;
+        $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
       }
     });
   }).catch();

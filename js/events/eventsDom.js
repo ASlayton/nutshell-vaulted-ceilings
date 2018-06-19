@@ -17,7 +17,6 @@ const eventDomString = (eventArray, whereAt, username) => {
       strang +=   `</div>`;
     } else {
       strang += `<p>${username}'s Event</p>`;
-
     }
     strang +=  `</div>`;
   });
