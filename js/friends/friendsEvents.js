@@ -1,5 +1,5 @@
 const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
-const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
+const {friendsList, friendRequestCard, modFriendsList,} = require('./friendsDom');;
 let friendUid = '';
 const friendArr = [];
 // const myFriend = [];
@@ -62,7 +62,8 @@ const getNonFriends = () =>
               addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
             }
           });
-          domStringBuild(addableUsers);
+          console.log(addableUsers);
+          modFriendsList(addableUsers);
         });
     })
     .catch((err) =>

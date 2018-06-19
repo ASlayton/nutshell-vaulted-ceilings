@@ -71,6 +71,7 @@ const getUserEvents = (userUid) =>
               });
             }
             resolve(eventsArr);
+            console.log(eventsArr);
           })
           .fail((err) => { reject(err); });
       })
@@ -98,9 +99,16 @@ const getMyFriendsEvent = () =>
     .catch((err) => { console.error(err); });
 };
 
+const getOurEvents = () =>
+{
+  getMyEvents();
+  getMyFriendsEvent();
+};
+
 module.exports =
 {
   getMyEvents,
   getUserEvents,
   getMyFriendsEvent,
+  getOurEvents,
 };

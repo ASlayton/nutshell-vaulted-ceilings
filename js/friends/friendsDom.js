@@ -40,6 +40,19 @@ const friendsList = (friendsArr) =>
   $('#myFriendsList').html(domString);
 };
 
+const modFriendsList = (friendsArr) =>
+{
+  let domString = '';
+  friendsArr.forEach(friend =>
+  {
+    domString += `<li class="list-group-item">`;
+    domString += `${friend.username}`;
+    domString += ` <button class="btn btn-success addThisFriend">Add</button>`;
+    domString += `</li>`;
+  });
+  $('#friendsList').html(domString);
+};
+
 const friendRequestCard = (fRArr) =>
 {
   let domString = '';
@@ -68,4 +81,5 @@ module.exports =
   domStringBuild,
   friendsList,
   friendRequestCard,
+  modFriendsList,
 };
