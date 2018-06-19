@@ -1,4 +1,5 @@
 // const { apiKeys, } = require('../apiKeys');
+const {eventDomString, } = require('../events/eventsDom');
 
 const { getMyFriends, } = require('./friendsCrud');
 
@@ -39,7 +40,6 @@ const getMyEvents = () =>
               });
             }
             resolve(eventsArr);
-            console.log(eventsArr);
           })
           .fail((err) => { reject(err); });
       })
@@ -91,7 +91,7 @@ const getMyFriendsEvent = () =>
           getUserEvents(friend.friendUid) // Gets the user events by UID
             .then((friendsEvents) =>
             {
-              console.log(friendsEvents);
+              eventDomString(friendsEvents, 'events-theirs'); // Prints Friends Events To the DOM
             });
         }
       });

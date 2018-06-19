@@ -264,7 +264,6 @@ const findUserName = (userObj) =>
         if (user.uid === userObj.friendUid)
         {
           userObj.username = user.username;
-          console.log(userObj);
           friendArr.length = 0;
           friendArr.push(userObj);
         }
