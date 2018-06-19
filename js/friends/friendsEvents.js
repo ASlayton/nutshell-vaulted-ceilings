@@ -11,6 +11,10 @@ $('#friendsBtn').click(() =>
   $('#welcome').addClass('hide');
   $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
+  showFriends();
+  $('#myFriendsList').html('');
+  $('#friendsList').html('');
+  $('#pendingFriendRequests').html('');
 });
 
 $(document).on('click', '#logout', () =>
@@ -285,7 +289,15 @@ const showFriends = () =>
           result.forEach(friend => {
             findUserName(friend);
           });
-          friendsList(result);
+          console.log(friendArr);
+          friendArr.forEach(element =>
+          {
+            if (element.friendUid !== firebase.auth().currentUser.uid)
+            {
+              friendsList(friendArr);
+            }
+          });
+
           friendRequestCard(friendRequests);
         });
     })

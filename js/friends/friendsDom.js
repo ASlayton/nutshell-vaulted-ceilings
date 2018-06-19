@@ -33,18 +33,21 @@ const modFriendsList = (friendsArr) =>
 const friendsList = (friendsArr) =>
 {
   let domString = '';
-  friendsArr.forEach(user =>
+  friendsArr.forEach(bud =>
   {
     domString += `<div class="col-md-100 ">`;
     domString += `<div class="panel panel-default">`;
-    domString += `<div class="panel-body friendCard" data-firebaseId="${user.id}">`;
-    domString += `<h3 data-friendUid="${user.uid}">${user.username}`;
-    if (user.isPending === true)
+    domString += `<div class="panel-body friendCard" data-firebaseId="${bud.id}">`;
+    bud.username = bud.username;
+    console.log(bud.username);
+    domString += `<h3 data-friendUid="${bud.uid}">${bud.username}`;
+    console.log(bud);
+    if (bud.isPending === true)
     {
       domString += `<span class="label label-primary">Pending</span>`;
     }
     domString += `</h3>`;
-    if (user.isPending === false && user.isAccepted)
+    if (bud.isPending === false && bud.isAccepted)
     {
       domString += `<button class="btn-danger rmvFriend">Remove Friend</button>`;
     }
