@@ -1,5 +1,5 @@
 const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
-const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
+const {friendsList, friendRequestCard, modFriendsList,} = require('./friendsDom');;
 let friendUid = '';
 const friendArr = [];
 // const myFriend = [];
@@ -8,10 +8,33 @@ $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
-  $('.navbar-header').html(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
+  $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
-  showFriends();
 });
+
+$(document).on('click', '#logout', () =>
+{
+  domClean();
+});
+
+// Will Clear the Dom
+
+const domClean = () =>
+{
+  let domString = '';
+  domString += `<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">`;
+  domString += `<span class="sr-only">Toggle navigation</span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `</button>`;
+  domString += `<a class="navbar-brand" href="#">Nutshell App</a>`;
+  $('#myFriendsList').html('');
+  $('#friendsList').html('');
+  $('#pendingFriendRequests').html('');
+  $('#friendsBtn').html('Friends');
+  $('.navbar-header').html(domString);
+};
 
 // Checks if the users are already on your friends list
 
@@ -39,7 +62,7 @@ const getNonFriends = () =>
               addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
             }
           });
-          domStringBuild(addableUsers);
+          modFriendsList(addableUsers);
         });
     })
     .catch((err) =>
@@ -79,6 +102,7 @@ const addAFriendEvent = () =>
     const friendToAdd =
     {
       'username': firebase.auth().currentUser.username,
+      'friendUsername': friendToAddCard.find('h3').text(),
       'friendUid': friendUid,
       'isAccepted': false,
       'isPending': true,
@@ -168,6 +192,7 @@ const acceptFR = () =>
     const updatedFriend =
     {
       'username': friendToUpdateCard.find('h3').text(),
+      'friendUsername': `${firebase.auth().currentUser.uid}`,
       'friendUid': friendUid,
       'isAccepted': true,
       'isPending': false,
@@ -180,6 +205,7 @@ const acceptFR = () =>
         const newFriend =
         {
           'username': `${firebase.auth().currentUser.username}`,
+          'friendUsername': friendToUpdateCard.find('h3').text(),
           'friendUid': `${firebase.auth().currentUser.uid}`,
           'isAccepted': true,
           'isPending': false,
@@ -266,7 +292,7 @@ const showFriends = () =>
           result.forEach(friend => {
             findUserName(friend);
           });
-          friendsList(friendArr);
+          friendsList(result);
           friendRequestCard(friendRequests);
         });
     })
