@@ -5,6 +5,7 @@ const eventsFeatureEvents = () => {
   $('#eventsBtn').click(() => {
     $('#events, #backBtn').fadeIn(1000).removeClass('hide');
     $('#welcome').addClass('hide');
+    retrieveAllMyEvents();
   });
 
   $('#eventsBackBtn').click(() => {
