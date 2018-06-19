@@ -205,7 +205,7 @@ const acceptFR = () =>
     const updatedFriend =
     {
       'username': friendToUpdateCard.find('h3').text(),
-      'friendUsername': `${firebase.auth().currentUser.uid}`,
+      'friendUsername': `${firebase.auth().currentUser.username}`,
       'friendUid': friendUid,
       'isAccepted': true,
       'isPending': false,
