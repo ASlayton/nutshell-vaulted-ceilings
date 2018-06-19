@@ -90,6 +90,10 @@ body {
   color: #5bc0de;
 }
 
+.subheader {
+  font-style: italic;
+}
+
 .event-card {
   background-color: #5bc0de;
   margin: 2% 4.1%;

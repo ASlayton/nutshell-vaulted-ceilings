@@ -1,34 +1,27 @@
 const { getConfig, } = require('../firebaseApi');
-const { apiKeys, } = require('../apiKeys');
 
 let firebaseConfig = {};
-// const uid = getUid();
 
-const getAllEventsFromFb = () => {
+const getMyEventsFromFb = () => {
   return new Promise((resolve, reject) => {
-    apiKeys()
-      .then((results) => {
-        const allEventsArray = [];
-        const uid = firebase.auth().currentUser.uid;
-        $.ajax({
-          method: 'GET',
-          url: `${results.firebase.databaseURL}/events.json?orderBy="uid"&equalTo="${uid}"`,
-        })
-          .done((allEventsObj) => {
-            if (allEventsObj !== null) {
-              Object.keys(allEventsObj).forEach((fbKey) => {
-                allEventsObj[fbKey].id = fbKey;
-                allEventsArray.push(allEventsObj[fbKey]);
-              });
-            }
-            resolve(allEventsArray);
-          })
-          .fail((error) => {
-            reject(error);
+    firebaseConfig = getConfig();
+    const allEventsArray = [];
+    const uid = firebase.auth().currentUser.uid;
+    $.ajax({
+      method: 'GET',
+      url: `${firebaseConfig.databaseURL}/events.json?orderBy="uid"&equalTo="${uid}"`,
+    })
+      .done((allEventsObj) => {
+        if (allEventsObj !== null) {
+          Object.keys(allEventsObj).forEach((fbKey) => {
+            allEventsObj[fbKey].id = fbKey;
+            allEventsArray.push(allEventsObj[fbKey]);
           });
+        }
+        resolve(allEventsArray);
       })
-      .catch((error) => {
-        console.error(error);
+      .fail((error) => {
+        reject(error);
       });
   });
 };
@@ -85,7 +78,7 @@ const updateUserEvent = (updatedEvt, id) => {
 
 module.exports = {
   saveNewEvent,
-  getAllEventsFromFb,
+  getMyEventsFromFb,
   deleteEvent,
   updateUserEvent,
 };
