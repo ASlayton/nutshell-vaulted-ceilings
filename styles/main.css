@@ -10,6 +10,7 @@ body {
 }
 
 /* Messages */
+
 #messages-header {
   color: #d9534f;
 }
@@ -51,7 +52,8 @@ body {
 #message-container {
   border: 7px #d9534f solid;
   border-radius: 15px;
-  height: 500px;
+  min-height: 500px;
+  max-height: 500px;
   margin-bottom: 30px;
 }
 
