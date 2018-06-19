@@ -10,6 +10,10 @@ body {
 }
 
 /* Messages */
+#messages-header {
+  color: #d9534f;
+}
+
 .speech-bubble {
   background-repeat: no-repeat;
   background-position: center center;
@@ -108,4 +112,8 @@ body {
 
 .friendCard {
   background-color: blue;
+}
+
+#friends-header {
+  color: #5cb85c;
 }
