@@ -1,5 +1,6 @@
 const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
 const {modFriendsList, friendsList, friendRequestCard,} = require('./friendsDom');;
+const {getOurEvents,} = require('./getOurEvents');
 let friendUid = '';
 const friendArr = [];
 // const myFriend = [];
@@ -299,6 +300,13 @@ const showMyFriends = () =>
     showFriends();
   });
 };
+
+// Show Friends Events
+
+$('#eventsBtn').click(() =>
+{
+  getOurEvents();
+});
 
 const initEvents = () =>
 {
