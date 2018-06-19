@@ -10,7 +10,7 @@ const clickTasks = () => {
 };
 
 const taskTime = () => {
-  $('#tasks').fadeIn(2200).removeClass('hide');
+  $('#tasks').fadeIn(1000).removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').fadeIn(5500).removeClass('hide');
   getAllTasks();
