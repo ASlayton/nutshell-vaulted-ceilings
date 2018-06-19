@@ -10,7 +10,7 @@ const taskString = () => {
   let strang = '';
   strang += `<div class="row">`;
   strang +=   `<div class="col-sm-6 col-sm-offset-3">`;
-  strang +=     `<h1 class="colorMeOrange">Tasks</h1>`;
+  strang +=     `<h1 class="colorMeOrange text-center">Tasks</h1>`;
   strang +=     `<div class="input-group">`;
   strang +=       `<input type="text" class="form-control" id="taskInput" placeholder="New Task">`;
   strang +=        `<span class="input-group-btn" id="createTaskBtn">`;
