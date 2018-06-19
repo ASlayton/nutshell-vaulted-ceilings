@@ -3,7 +3,6 @@ const eventDomString = (eventArray, whereAt) => {
   strang += `<div class="container-fluid">`;
   strang +=   `<div class="row text-center">`;
   eventArray.forEach((event) => {
-    console.log(event);
     strang +=   `<div class="col-md-3 event-card" data-firebase-id="${event.id}">`;
     strang +=     `<h3 class="evt-title">${event.title}</h3>`;
     strang +=     `<ul class="list-group">`;
