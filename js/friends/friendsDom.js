@@ -1,20 +1,3 @@
-const domStringBuild = (allUsersArr) =>
-{
-  let domString = '';
-  allUsersArr.forEach(user =>
-  {
-    domString += `<div class="col-md-100 userCard">`;
-    domString += `<div class="panel panel-default">`;
-    domString += `<div class="panel-body">`;
-    domString += `<h3 data-friendUid="${user.uid}">${user.username}</h3>`;
-    domString += `<button class="btn btn-danger addThisFriend">Add</button>`;
-    domString += `</div>`;
-    domString += `</div>`;
-    domString += `</div>`;
-  });
-  $('#newFriendsBay').html(domString);
-};
-
 const modFriendsList = (friendsArr) =>
 {
   let domString = '';
@@ -39,9 +22,7 @@ const friendsList = (friendsArr) =>
     domString += `<div class="panel panel-default">`;
     domString += `<div class="panel-body friendCard" data-firebaseId="${bud.id}">`;
     bud.username = bud.username;
-    console.log(bud.username);
     domString += `<h3 data-friendUid="${bud.uid}">${bud.username}`;
-    console.log(bud);
     if (bud.isPending === true)
     {
       domString += `<span class="label label-primary">Pending</span>`;
@@ -83,7 +64,6 @@ const friendRequestCard = (fRArr) =>
 
 module.exports =
 {
-  domStringBuild,
   friendsList,
   friendRequestCard,
   modFriendsList,

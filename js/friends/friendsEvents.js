@@ -289,7 +289,6 @@ const showFriends = () =>
           result.forEach(friend => {
             findUserName(friend);
           });
-          console.log(friendArr);
           friendArr.forEach(element =>
           {
             if (element.friendUid !== firebase.auth().currentUser.uid)
