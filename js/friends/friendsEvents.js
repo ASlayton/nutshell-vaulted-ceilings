@@ -1,5 +1,5 @@
 const {getAllUsers, addAFriend, getAllFriends, getFriendRequests, updateFriend, deleteAFriend, getUsers, addANewFriend, getMyFriends,} = require('./friendsCrud');
-const {domStringBuild, friendsList, friendRequestCard,} = require('./friendsDom');;
+const {modFriendsList, friendsList, friendRequestCard,} = require('./friendsDom');;
 let friendUid = '';
 const friendArr = [];
 // const myFriend = [];
@@ -8,10 +8,33 @@ $('#friendsBtn').click(() =>
 {
   $('#friends').removeClass('hide');
   $('#welcome').addClass('hide');
-  $('.navbar-header').html(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
+  $('.navbar-header').append(`<a class="navbar-brand" href="#">${firebase.auth().currentUser.username}</a>`);
   $('#backBtn').removeClass('hide');
-  showFriends();
 });
+
+$(document).on('click', '#logout', () =>
+{
+  domClean();
+});
+
+// Will Clear the Dom
+
+const domClean = () =>
+{
+  let domString = '';
+  domString += `<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">`;
+  domString += `<span class="sr-only">Toggle navigation</span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `<span class="icon-bar"></span>`;
+  domString += `</button>`;
+  domString += `<a class="navbar-brand" href="#">Nutshell App</a>`;
+  $('#myFriendsList').html('');
+  $('#friendsList').html('');
+  $('#pendingFriendRequests').html('');
+  $('#friendsBtn').html('Friends');
+  $('.navbar-header').html(domString);
+};
 
 // Checks if the users are already on your friends list
 
@@ -39,7 +62,7 @@ const getNonFriends = () =>
               addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
             }
           });
-          domStringBuild(addableUsers);
+          modFriendsList(addableUsers);
         });
     })
     .catch((err) =>
@@ -75,7 +98,7 @@ const addAFriendEvent = () =>
   $(document).on('click', '.addThisFriend', (e) =>
   {
     const friendToAddCard = $(e.target).closest('.userCard');
-    const friendUid = friendToAddCard.find('h3').data('frienduid');
+    const friendUid = friendToAddCard.find('li').data('frienduid');
     const friendToAdd =
     {
       'username': firebase.auth().currentUser.username,
@@ -89,6 +112,7 @@ const addAFriendEvent = () =>
         console.error('Error in adding a friend', err);
       });
     getNonFriends();
+    showFriends();
   });
 };
 
@@ -100,7 +124,14 @@ const removeFriend = () =>
   {
     const friendId = $(e.target).closest('.friendCard').data('firebaseid');
     deleteAFriend(friendId)
-      .then().catch((err) => { console.error(err); });
+      .then(() =>
+      {
+        $('#friendsList').html('');
+        getNonFriends();
+        $('#myFriendsList').html('');
+        friendArr.length = 0;
+        showFriends();
+      }).catch((err) => { console.error(err); });
   });
 };
 
@@ -229,29 +260,14 @@ const findUserName = (userObj) =>
         if (user.uid === userObj.friendUid)
         {
           userObj.username = user.username;
+          console.log(userObj);
+          friendArr.length = 0;
           friendArr.push(userObj);
         }
       });
     })
     .catch((err) => { console.error(err); });
 };
-
-// const findUid = (userObj) =>
-// {
-//   getAllUsers()
-//     .then((users) =>
-//     {
-//       users.forEach(user =>
-//       {
-//         if (user.username === userObj.friendUid)
-//         {
-//           userObj.username = user.username;
-//           friendArr.push(userObj);
-//         }
-//       });
-//     })
-//     .catch((err) => { console.error(err); });
-// };
 
 // Show A list of your friends
 
