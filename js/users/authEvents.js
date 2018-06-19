@@ -1,4 +1,5 @@
 const {getUsers, saveNewUser,} = require('./usersFirebase');
+const {retrieveAllMyEvents,} = require('../events/userEventEvents');
 
 const authorizationEvents = () => {
   $('#go-register').click(() => {
@@ -52,6 +53,9 @@ const authorizationEvents = () => {
     const email = $('#inputEmail').val();
     const password = $('#inputPassword').val();
     firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(() => {
+        retrieveAllMyEvents();
+      })
       .catch((error) => {
         $('#signin-error-msg').text(error.message);
         $('#signin-error').removeClass('hide');

@@ -1,10 +1,11 @@
-const {saveNewEvent, getAllEventsFromFb, deleteEvent, updateUserEvent,} = require('./eventsFirebase');
+const {saveNewEvent, getMyEventsFromFb, deleteEvent, updateUserEvent,} = require('./eventsFirebase');
 const {eventDomString,} = require('./eventsDom');
 
 const eventsFeatureEvents = () => {
   $('#eventsBtn').click(() => {
     $('#events, #backBtn').fadeIn(1000).removeClass('hide');
     $('#welcome').addClass('hide');
+    retrieveAllMyEvents();
   });
 
   $('#eventsBackBtn').click(() => {
@@ -25,7 +26,7 @@ const eventsFeatureEvents = () => {
     };
     saveNewEvent(newEventObj);
     $('#eventTitle, #eventDate, #eventLocation').val('');
-    retrieveAllEvents();
+    retrieveAllMyEvents();
   });
 
   $('#newEventBtn').click(() => {
@@ -35,10 +36,10 @@ const eventsFeatureEvents = () => {
 
 };
 
-const retrieveAllEvents = () => {
-  getAllEventsFromFb()
+const retrieveAllMyEvents = () => {
+  getMyEventsFromFb()
     .then((results) => {
-      eventDomString(results);
+      eventDomString(results, 'events-mine');
     })
     .catch((error) => {
       console.error(error);
@@ -50,7 +51,7 @@ const deleteAnEvent = () => {
     const eventToDelete = $(e.target).closest('.event-card').data('firebaseId');
     deleteEvent(eventToDelete)
       .then(() => {
-        retrieveAllEvents();
+        retrieveAllMyEvents();
       })
       .catch((error) => {
         console.error(error);
@@ -70,28 +71,36 @@ const editAnEvent = () => {
     $('#eventTitle').val(currentTitle);
     $('#eventDate').val(currentDate);
     $('#eventLocation').val(currentLoc);
+    saveEditedEvent(eventToEditId);
+  });
+};
 
-    $('#updateEventBtn').click(() => {
-      const newTitle = $('#eventTitle').val();
-      const newDate = $('#eventDate').val();
-      const newLocation = $('#eventLocation').val();
-      const userId = firebase.auth().currentUser.uid;
-      const updatedEventObj = {
-        title: newTitle,
-        date: newDate,
-        location: newLocation,
-        uid: userId,
-      };
-      updateUserEvent(updatedEventObj, eventToEditId);
-      $('#eventTitle, #eventDate, #eventLocation').val('');
-      retrieveAllEvents();
-    });
+const saveEditedEvent = (id) => {
+  $('#updateEventBtn').click(() => {
+    const newTitle = $('#eventTitle').val();
+    const newDate = $('#eventDate').val();
+    const newLocation = $('#eventLocation').val();
+    const userId = firebase.auth().currentUser.uid;
+    const updatedEventObj = {
+      title: newTitle,
+      date: newDate,
+      location: newLocation,
+      uid: userId,
+    };
+    updateUserEvent(updatedEventObj, id)
+      .then(() => {
+        retrieveAllMyEvents();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    $('#eventTitle, #eventDate, #eventLocation').val('');
   });
 };
 
 module.exports = {
   eventsFeatureEvents,
-  retrieveAllEvents,
+  retrieveAllMyEvents,
   deleteAnEvent,
   editAnEvent,
 };
