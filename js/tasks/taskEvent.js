@@ -13,6 +13,7 @@ const taskTime = () => {
   $('#tasks').fadeIn(1000).removeClass('hide');
   $('#welcome').addClass('hide');
   $('#backBtn').fadeIn(5500).removeClass('hide');
+  $('#taskInput').val('');
   getAllTasks();
   taskDom.taskString();
 };
@@ -28,7 +29,6 @@ const pressEnter = (e) => {
     };
     taskFirebase.createTask(taskToAdd)
       .then(() => {
-        $('#taskInput').val('');
         taskTime();
       })
       .catch((error) => {
@@ -45,7 +45,6 @@ const clickTaskButton = () => {
   };
   taskFirebase.createTask(taskToAdd)
     .then(() => {
-      $('#taskInput').val('');
       taskTime();
     })
     .catch((error) => {
