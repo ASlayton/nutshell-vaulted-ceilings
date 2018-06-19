@@ -79,6 +79,7 @@ const addAFriendEvent = () =>
     const friendToAdd =
     {
       'username': firebase.auth().currentUser.username,
+      'friendUsername': friendToAddCard.find('h3').text(),
       'friendUid': friendUid,
       'isAccepted': false,
       'isPending': true,
@@ -168,6 +169,7 @@ const acceptFR = () =>
     const updatedFriend =
     {
       'username': friendToUpdateCard.find('h3').text(),
+      'friendUsername': `${firebase.auth().currentUser.uid}`,
       'friendUid': friendUid,
       'isAccepted': true,
       'isPending': false,
@@ -180,6 +182,7 @@ const acceptFR = () =>
         const newFriend =
         {
           'username': `${firebase.auth().currentUser.username}`,
+          'friendUsername': friendToUpdateCard.find('h3').text(),
           'friendUid': `${firebase.auth().currentUser.uid}`,
           'isAccepted': true,
           'isPending': false,
