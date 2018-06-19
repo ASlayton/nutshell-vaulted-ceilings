@@ -40,21 +40,7 @@ const theTasksDom = (taskArray) => {
   printTheTasks(domString);
 };
 
-const newTask = (newTasks) => {
-  let domString = '';
-  domString += `<div class="panel panel-default taskPanel" id="taskCard" data-firebase-id='${newTasks.id}'>`;
-  domString +=  `<div class="panel-body row">`;
-  domString +=   `<h4 class="col-sm-8 theTask">${newTasks.task}</h4>`;
-  domString +=   `<input class="checkbox col-sm-1" type="checkbox"><label class="col-sm-1">Complete</label>`;
-  domString +=   `</input>`;
-  domString +=   `<button class="btn btn-danger btn-xs col-sm-1 col-sm-offset-1" id="deleteTask">Delete</button>`;
-  domString +=  `</div>`;
-  domString += `</div>`;
-  printTheTasks(domString);
-};
-
 module.exports = {
   taskString,
   theTasksDom,
-  newTask,
 };

@@ -28,7 +28,6 @@ const pressEnter = (e) => {
     };
     taskFirebase.createTask(taskToAdd)
       .then(() => {
-        taskDom.newTask(taskToAdd);
         $('#taskInput').val('');
         taskTime();
       })
@@ -46,7 +45,6 @@ const clickTaskButton = () => {
   };
   taskFirebase.createTask(taskToAdd)
     .then(() => {
-      taskDom.newTask(taskToAdd);
       $('#taskInput').val('');
       taskTime();
     })
