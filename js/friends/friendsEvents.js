@@ -62,7 +62,6 @@ const getNonFriends = () =>
               addableUsers = addableUsers.filter(user => user.uid !== friend.friendUid && friend.friendUid !== firebase.auth().currentUser.uid);
             }
           });
-          console.log(addableUsers);
           modFriendsList(addableUsers);
         });
     })

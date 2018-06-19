@@ -71,7 +71,6 @@ const getUserEvents = (userUid) =>
               });
             }
             resolve(eventsArr);
-            console.log(eventsArr);
           })
           .fail((err) => { reject(err); });
       })
