@@ -1,21 +1,4 @@
-const {getAllMessages, getAllUsers,} = require('./messageFirebase');
-
-getAllMessages().then((results) => {
-  const messages = results;
-  console.log(messages);
-  messages.forEach((message) => {
-    getAllUsers().then((results) => {
-      const users = results;
-      console.log(users);
-      users.forEach((user) => {
-        if (user.uid === message.uid) {
-          .push(user.uid);
-        }
-      });
-    });
-  });
-});
-
+// const {getAllUsers,} = require('./messageFirebase');
 const printAllMessagesToDom = (strangs) => {
   $('#message-container').html(strangs);
 };
