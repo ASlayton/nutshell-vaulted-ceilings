@@ -14,6 +14,7 @@ const eventBinder = () => {
   $(document).on('click', '.deleteMessageBtn', deleteMessageEvent);
   $(document).on('click', '.editMessageBtn', editMessageEvent);
   $(document).on('click', '#messagesBtn', messageContainerEvent);
+  $(document).on('click', '#saveMessageBtn', messageEditModalEvent);
 };
 
 // Enter message click
@@ -22,8 +23,7 @@ const clickMessageSubmit = () => {
     $('#message-submit:disabled');
   } else {
     const message = $('#message-input').val();
-    const date = new Date();
-    const timestamp = date.getTime();
+    const timestamp = new Date();
     const userId = firebase.auth().currentUser.uid;
     const messageToAdd = {
       message: message,
@@ -46,8 +46,7 @@ const clickMessageSubmit = () => {
 const pressEnterMessage = (e) => {
   if (e.key === 'Enter' && !$('#messages').hasClass('hide')) {
     const message = $('#message-input').val();
-    const date = new Date();
-    const timestamp = date.getTime();
+    const timestamp = new Date();
     const userId = firebase.auth().currentUser.uid;
     const messageToAdd = {
       message: message,
@@ -95,24 +94,24 @@ const editMessageEvent = (e) => {
   const messageToEditId = $(e.target).closest('.message-card').data('firebaseId');
   const messageToEditCard = $(e.target).closest('.message-card');
   const messageToEditText = messageToEditCard.find('.message-text').text();
-  // const timeToEdit = messageToEditCard.find('.message-time').text();   // **NEED TO ADD TIME OF MESSAGE TO DOM**
   $('#message-edit-mode').val(messageToEditText);
+  $('#saveMessageBtn').data('editId', messageToEditId);
+};
 
-  $('#saveMessageBtn').click(() => {
-    const newMessage = $('#message-edit-mode').val();
-    const newTime = $('.message-time').val();  // **NEED TO ADD TIME OF MESSAGE TO DOM**
-    const userId = firebase.auth().currentUser.uid;
-    const updatedMessageObj = {
-      message: newMessage,
-      timestamp: newTime,
-      isEdited: true,
-      uid: userId,
-    };
-    messageFirebase.editMessage(updatedMessageObj, messageToEditId)
-      .then(() => {
-        retrieveAllMessages();
-      });
-  });
+const messageEditModalEvent = () => {
+  const messageEditId = $('#saveMessageBtn').data('editId');
+  const newMessage = $('#message-edit-mode').val();
+  const userId = firebase.auth().currentUser.uid;
+  const updatedMessageObj = {
+    message: newMessage,
+    timestamp: new Date(),
+    isEdited: true,
+    uid: userId,
+  };
+  messageFirebase.editMessage(updatedMessageObj, messageEditId)
+    .then(() => {
+      retrieveAllMessages();
+    });
 };
 
 module.exports = {
