@@ -6,7 +6,6 @@ The Nutshell app is dashboard app that allows you to create, read, update, and d
 ## Screenshot
 ![gif](https://media.giphy.com/media/ftdF2O30DSLwMJo0Pg/giphy.gif)
 
-[/images/register.png]
 
 ## How to Run
 - https://nutshell-vaulted.firebaseapp.com/
